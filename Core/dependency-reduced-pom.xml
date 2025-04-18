@@ -8,12 +8,6 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>Core</artifactId>
   <build>
-    <resources>
-      <resource>
-        <filtering>true</filtering>
-        <directory>src/main/resources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
@@ -24,27 +18,24 @@
             <goals>
               <goal>shade</goal>
             </goals>
-            <configuration>
-              <outputFile>${project.parent.basedir}\target\${project.parent.name}-${project.version}.jar</outputFile>
-              <artifactSet>
-                <includes>
-                  <include>su.nightexpress.excellentenchants*</include>
-                  <include>com.tcoded.folialib*</include>
-                </includes>
-              </artifactSet>
-              <relocations>
-                <relocation>
-                  <pattern>com.tcoded.folialib</pattern>
-                  <shadedPattern>su.nightexpress.excellentenchants.lib.folialib</shadedPattern>
-                </relocation>
-              </relocations>
-            </configuration>
           </execution>
         </executions>
+        <configuration>
+          <relocations>
+            <relocation>
+              <pattern>com.tcoded.folialib</pattern>
+              <shadedPattern>su.nightexpress.excellentenchants.lib.folialib</shadedPattern>
+            </relocation>
+          </relocations>
+        </configuration>
       </plugin>
     </plugins>
   </build>
   <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
     <repository>
       <id>md_5-releases</id>
       <url>https://repo.md-5.net/content/repositories/releases/</url>
@@ -72,12 +63,6 @@
   </repositories>
   <dependencies>
     <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.21.1-R0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>io.lumine</groupId>
       <artifactId>Mythic-Dist</artifactId>
       <version>5.6.0-SNAPSHOT</version>
@@ -100,18 +85,6 @@
       <artifactId>placeholderapi</artifactId>
       <version>2.11.6</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.technicallycoded</groupId>
-      <artifactId>FoliaLib</artifactId>
-      <version>main-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>su.nightexpress.nightcore</groupId>
-      <artifactId>nightcore</artifactId>
-      <version>2.7.5.2</version>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
   <properties>
