@@ -76,7 +76,7 @@ public class StoppingForceEnchant extends GameEnchantment implements ChanceMeta,
 
         double mod = Math.max(0, this.getKnockbackModifier(level));
 
-        this.plugin.runTask(task -> {
+        this.plugin.getFoliaLib().runAtEntity(victim, task -> {
             victim.setVelocity(victim.getVelocity().multiply(mod));
         });
         return true;

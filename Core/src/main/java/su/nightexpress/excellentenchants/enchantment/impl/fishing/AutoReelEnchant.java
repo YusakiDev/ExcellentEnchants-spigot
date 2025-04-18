@@ -16,8 +16,10 @@ import su.nightexpress.excellentenchants.rarity.EnchantRarity;
 import su.nightexpress.excellentenchants.util.ItemCategories;
 import su.nightexpress.excellentenchants.util.EnchantUtils;
 import su.nightexpress.nightcore.config.FileConfig;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 
 import java.io.File;
+import java.util.function.Consumer;
 
 public class AutoReelEnchant extends GameEnchantment implements FishingEnchant {
 
@@ -52,7 +54,7 @@ public class AutoReelEnchant extends GameEnchantment implements FishingEnchant {
 
         int id = slot == EquipmentSlot.HAND ? 0 : 3;
 
-        this.plugin.runTask(task -> {
+        this.plugin.getFoliaLib().runAtEntity(player, task -> {
             if (event.isCancelled()) return;
             if (!event.getHook().isValid()) return;
 

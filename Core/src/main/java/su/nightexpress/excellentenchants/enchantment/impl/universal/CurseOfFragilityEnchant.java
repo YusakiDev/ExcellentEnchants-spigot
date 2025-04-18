@@ -82,7 +82,7 @@ public class CurseOfFragilityEnchant extends GameEnchantment implements GenericE
     }
 
     private void stopGrindstone(@NotNull Inventory inventory) {
-        plugin.runTask(task -> {
+        this.plugin.getFoliaLib().runNextTick(task -> {
             ItemStack first = inventory.getItem(0);
             ItemStack second = inventory.getItem(1);
 

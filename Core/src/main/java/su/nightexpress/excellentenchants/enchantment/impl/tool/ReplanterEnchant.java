@@ -160,7 +160,7 @@ public class ReplanterEnchant extends GameEnchantment implements ChanceMeta, Int
 
         // Replant the gathered crops with a new one.
         if (this.takeSeeds(player, dataPlant.getPlacementMaterial())) {
-            plugin.runTask(task -> {
+            this.plugin.getFoliaLib().runAtLocation(blockPlant.getLocation(), task -> {
                 blockPlant.setType(plant.getMaterial());
                 plant.setAge(0);
                 blockPlant.setBlockData(plant);

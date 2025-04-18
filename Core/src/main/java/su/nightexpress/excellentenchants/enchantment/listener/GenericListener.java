@@ -21,6 +21,9 @@ import su.nightexpress.excellentenchants.enchantment.EnchantManager;
 import su.nightexpress.excellentenchants.registry.EnchantRegistry;
 import su.nightexpress.excellentenchants.util.EnchantUtils;
 import su.nightexpress.nightcore.manager.AbstractListener;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
+
+import java.util.function.Consumer;
 
 public class GenericListener extends AbstractListener<EnchantsPlugin> {
 
@@ -43,7 +46,7 @@ public class GenericListener extends AbstractListener<EnchantsPlugin> {
             EnchantUtils.runInDisabledDisplayUpdate(player, player::updateInventory);
         }
         else if (current == GameMode.CREATIVE) {
-            this.plugin.runTask(task -> player.updateInventory());
+            this.plugin.getFoliaLib().runAtEntity(player, task -> player.updateInventory());
         }
     }
 
@@ -66,7 +69,7 @@ public class GenericListener extends AbstractListener<EnchantsPlugin> {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEnchantedProjectileLand(ProjectileHitEvent event) {
-        this.plugin.runTask(task -> {
+        this.plugin.getFoliaLib().runAtEntity(event.getEntity(), task -> {
             EnchantUtils.removeEnchantedProjectile(event.getEntity());
         });
     }
@@ -75,7 +78,7 @@ public class GenericListener extends AbstractListener<EnchantsPlugin> {
     public void onChargesFillOnEnchant(EnchantItemEvent event) {
         if (!Config.isChargesEnabled()) return;
 
-        this.plugin.runTask(task -> {
+        this.plugin.getFoliaLib().runNextTick(task -> {
             Inventory inventory = event.getInventory();
 
             ItemStack result = inventory.getItem(0);

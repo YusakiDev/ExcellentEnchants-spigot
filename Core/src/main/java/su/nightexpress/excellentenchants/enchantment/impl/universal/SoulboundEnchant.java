@@ -73,7 +73,7 @@ public class SoulboundEnchant extends GameEnchantment implements GenericEnchant,
 
         if (saveList.isEmpty()) return;
 
-        this.plugin.runTask(task -> {
+        this.plugin.getFoliaLib().runAtEntity(player, task -> {
             saveList.forEach(save -> {
                 if (player.getInventory().firstEmpty() == -1) {
                     world.dropItemNaturally(location, save);

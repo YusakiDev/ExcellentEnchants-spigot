@@ -20,9 +20,11 @@ import su.nightexpress.excellentenchants.util.EnchantUtils;
 import su.nightexpress.nightcore.manager.AbstractListener;
 import su.nightexpress.nightcore.util.PDCUtil;
 import su.nightexpress.nightcore.util.bukkit.NightSound;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class AnvilListener extends AbstractListener<EnchantsPlugin> {
 
@@ -68,7 +70,7 @@ public class AnvilListener extends AbstractListener<EnchantsPlugin> {
         PDCUtil.set(recharged, Keys.itemRecharged, count);
         event.setResult(recharged);
 
-        this.plugin.runTask(task -> event.getView().setRepairCost(chargable.size()));
+        this.plugin.getFoliaLib().runNextTick(task -> event.getView().setRepairCost(chargable.size()));
         return true;
     }
 

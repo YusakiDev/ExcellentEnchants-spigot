@@ -15,6 +15,7 @@ import su.nightexpress.excellentenchants.hook.HookPlugin;
 import su.nightexpress.excellentenchants.hook.impl.PacketEventsHook;
 import su.nightexpress.excellentenchants.hook.impl.PlaceholderHook;
 import su.nightexpress.excellentenchants.hook.impl.ProtocolLibHook;
+import su.nightexpress.excellentenchants.lib.folialib.FoliaLibWrapper;
 import su.nightexpress.excellentenchants.nms.EnchantNMS;
 import su.nightexpress.excellentenchants.nms.Internal_1_21_3;
 import su.nightexpress.excellentenchants.nms.Internal_1_21_4;
@@ -32,11 +33,13 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
     private RarityManager   rarityManager;
     private EnchantManager  enchantManager;
     private EnchantNMS      enchantNMS;
+    private FoliaLibWrapper foliaLib;
 
     @Override
     public void onLoad() {
         super.onLoad();
         this.registry = new EnchantRegistry(this);
+        this.foliaLib = new FoliaLibWrapper(this);
     }
 
     @Override
@@ -151,5 +154,10 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
     @NotNull
     public EnchantNMS getEnchantNMS() {
         return enchantNMS;
+    }
+
+    @NotNull
+    public FoliaLibWrapper getFoliaLib() {
+        return this.foliaLib;
     }
 }

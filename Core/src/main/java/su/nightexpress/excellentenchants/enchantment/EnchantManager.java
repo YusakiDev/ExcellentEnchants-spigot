@@ -14,6 +14,7 @@ import su.nightexpress.excellentenchants.config.Config;
 import su.nightexpress.excellentenchants.enchantment.listener.AnvilListener;
 import su.nightexpress.excellentenchants.enchantment.listener.GenericListener;
 import su.nightexpress.excellentenchants.enchantment.menu.EnchantsMenu;
+import su.nightexpress.excellentenchants.lib.folialib.FoliaLibWrapper;
 import su.nightexpress.excellentenchants.registry.EnchantRegistry;
 import su.nightexpress.excellentenchants.util.EnchantUtils;
 import su.nightexpress.nightcore.manager.AbstractManager;
@@ -25,12 +26,10 @@ import java.util.stream.Collectors;
 public class EnchantManager extends AbstractManager<EnchantsPlugin> {
 
     private final Set<PassiveEnchant> passiveEnchants;
-
     private EnchantsMenu enchantsMenu;
 
     public EnchantManager(@NotNull EnchantsPlugin plugin) {
         super(plugin);
-
         this.passiveEnchants = new HashSet<>(EnchantRegistry.getEnchantments(PassiveEnchant.class));
     }
 
@@ -40,15 +39,15 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
         this.addListener(new GenericListener(this.plugin, this));
         this.addListener(new AnvilListener(this.plugin));
 
-        this.addAsyncTask(this::displayProjectileTrails, Config.CORE_PROJECTILE_PARTICLE_INTERVAL.get());
+        plugin.getFoliaLib().runTimerAsync(task -> displayProjectileTrails(), Config.CORE_PROJECTILE_PARTICLE_INTERVAL.get(), Config.CORE_PROJECTILE_PARTICLE_INTERVAL.get());
 
         if (!this.passiveEnchants.isEmpty()) {
-            this.addTask(this::updatePassiveEnchantEffects, ConfigBridge.getEnchantsTickInterval());
+            plugin.getFoliaLib().runTimer(task -> updatePassiveEnchantEffects(), ConfigBridge.getEnchantsTickInterval(), ConfigBridge.getEnchantsTickInterval());
         }
 
         CustomEnchantment enchantment = EnchantRegistry.getById(EnchantmentID.FLAME_WALKER);
         if (enchantment instanceof FlameWalker flameWalker) {
-            this.addTask(flameWalker::tickBlocks, 1);
+            plugin.getFoliaLib().runTimer(task -> flameWalker.tickBlocks(), 1, 1);
         }
     }
 
