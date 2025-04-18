@@ -83,32 +83,45 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
             .collect(Collectors.toSet());
         if (readyEnchants.isEmpty()) return;
 
+        // Get entities but process them individually in their own regions
         Set<LivingEntity> entities = this.getPassiveEnchantEntities();
+        for (LivingEntity entity : entities) {
+            plugin.getFoliaLib().runAtEntity(entity, task -> {
+                for (PassiveEnchant enchant : readyEnchants) {
+                    EnchantUtils.getEquipped(entity, enchant).forEach((item, level) -> {
+                        if (!enchant.isAvailableToUse(entity)) return;
+                        if (enchant.isOutOfCharges(item)) return;
+                        if (enchant.onTrigger(entity, item, level)) {
+                            enchant.consumeCharges(item, level);
+                        }
+                    });
+                }
+            });
+        }
 
-        readyEnchants.forEach(enchant -> {
-            for (LivingEntity entity : entities) {
-                EnchantUtils.getEquipped(entity, enchant).forEach((item, level) -> {
-                    if (!enchant.isAvailableToUse(entity)) return;
-                    if (enchant.isOutOfCharges(item)) return;
-                    if (enchant.onTrigger(entity, item, level)) {
-                        enchant.consumeCharges(item, level);
-                    }
-                });
-            }
-
-            enchant.updateTriggerTime();
-        });
+        // Update trigger time after processing all entities
+        readyEnchants.forEach(PassiveEnchant::updateTriggerTime);
     }
 
     @NotNull
     private Set<LivingEntity> getPassiveEnchantEntities() {
-        Set<LivingEntity> list = new HashSet<>(plugin.getServer().getOnlinePlayers());
+        Set<LivingEntity> list = new HashSet<>();
+        
+        // Get players directly since they're thread-safe to access
+        list.addAll(plugin.getServer().getOnlinePlayers());
 
+        // Add mobs if enabled
         if (Config.CORE_PASSIVE_ENCHANTS_FOR_MOBS.get()) {
-            plugin.getServer().getWorlds().stream().filter(world -> !world.getPlayers().isEmpty()).forEach(world -> {
-                list.addAll(world.getEntitiesByClass(LivingEntity.class));
-            });
+            plugin.getServer().getWorlds().stream()
+                .filter(world -> !world.getPlayers().isEmpty())
+                .forEach(world -> {
+                    // Schedule mob collection per-region to be safe
+                    plugin.getFoliaLib().runAtLocation(world.getSpawnLocation(), task -> {
+                        list.addAll(world.getEntitiesByClass(LivingEntity.class));
+                    });
+                });
         }
+
         list.removeIf(entity -> entity.isDead() || !entity.isValid());
         return list;
     }
