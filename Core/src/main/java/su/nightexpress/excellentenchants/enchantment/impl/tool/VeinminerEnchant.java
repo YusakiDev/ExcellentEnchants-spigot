@@ -34,7 +34,7 @@ import static su.nightexpress.excellentenchants.Placeholders.GENERIC_AMOUNT;
 
 public class VeinminerEnchant extends GameEnchantment implements BlockBreakEnchant {
 
-    public static final String ID = "veinminer";
+    public static final String ID = "vein_miner";
 
     private static final BlockFace[] AREA = {
         BlockFace.UP, BlockFace.DOWN, BlockFace.EAST,

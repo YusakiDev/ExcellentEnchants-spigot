@@ -24,6 +24,7 @@ import su.nightexpress.excellentenchants.enchantment.impl.fishing.*;
 import su.nightexpress.excellentenchants.enchantment.impl.tool.*;
 import su.nightexpress.excellentenchants.enchantment.impl.universal.CurseOfFragilityEnchant;
 import su.nightexpress.excellentenchants.enchantment.impl.universal.RestoreEnchant;
+import su.nightexpress.excellentenchants.enchantment.impl.universal.SelfRepairingEnchant;
 import su.nightexpress.excellentenchants.enchantment.impl.universal.SoulboundEnchant;
 import su.nightexpress.excellentenchants.enchantment.impl.weapon.*;
 import su.nightexpress.excellentenchants.registry.wrapper.DataGather;
@@ -169,6 +170,7 @@ public class EnchantRegistry extends SimpleManager<EnchantsPlugin> {
         this.register(CurseOfMediocrityEnchant.ID, file -> new CurseOfMediocrityEnchant(plugin, file));
         this.register(SoulboundEnchant.ID, file -> new SoulboundEnchant(plugin, file));
         this.register(RestoreEnchant.ID, file -> new RestoreEnchant(plugin, file));
+        this.register(SelfRepairingEnchant.ID, file -> new SelfRepairingEnchant(plugin, file));
 
         getRegistered().forEach(enchantment -> {
             this.plugin.getEnchantNMS().addExclusives(enchantment);

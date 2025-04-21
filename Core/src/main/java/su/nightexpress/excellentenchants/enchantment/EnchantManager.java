@@ -18,6 +18,7 @@ import su.nightexpress.excellentenchants.lib.folialib.FoliaLibWrapper;
 import su.nightexpress.excellentenchants.registry.EnchantRegistry;
 import su.nightexpress.excellentenchants.util.EnchantUtils;
 import su.nightexpress.nightcore.manager.AbstractManager;
+import su.nightexpress.excellentenchants.util.EnchantedProjectile; 
 
 import java.util.HashSet;
 import java.util.Set;
@@ -66,14 +67,19 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
     }
 
     private void displayProjectileTrails() {
-        EnchantUtils.getEnchantedProjectiles().removeIf(enchantedProjectile -> {
-            if (!enchantedProjectile.isValid()) {
-                return true;
-            }
-
-            enchantedProjectile.playParticles();
-            return false;
-        });
+        // Create a copy of the projectiles to avoid concurrent modification
+        Set<EnchantedProjectile> projectiles = new HashSet<>(EnchantUtils.getEnchantedProjectiles());
+        
+        for (EnchantedProjectile projectile : projectiles) {
+            // Schedule validity check and particle display on the correct thread
+            plugin.getFoliaLib().runAtEntity(projectile.getProjectile(), task -> {
+                if (!projectile.isValid()) {
+                    EnchantUtils.getEnchantedProjectiles().remove(projectile);
+                    return;
+                }
+                projectile.playParticles();
+            });
+        }
     }
 
     private void updatePassiveEnchantEffects() {

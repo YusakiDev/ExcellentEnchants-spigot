@@ -35,7 +35,7 @@ import java.util.Set;
 
 public class ReplanterEnchant extends GameEnchantment implements ChanceMeta, InteractEnchant, BlockBreakEnchant {
 
-    public static final String ID = "replanter";
+    public static final String ID = "replenish";
 
     private boolean replantOnRightClick;
     private boolean replantOnPlantBreak;
