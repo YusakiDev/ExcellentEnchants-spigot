@@ -18,6 +18,14 @@ public class FoliaLibWrapper {
         this.foliaLib = new FoliaLib(plugin);
     }
 
+    /**
+     * Checks if the server is running on Folia
+     * @return true if running on Folia, false otherwise
+     */
+    public boolean isFolia() {
+        return foliaLib.isFolia();
+    }
+
     public void runNextTick(@NotNull Consumer<WrappedTask> task) {
         foliaLib.getScheduler().runNextTick(task);
     }

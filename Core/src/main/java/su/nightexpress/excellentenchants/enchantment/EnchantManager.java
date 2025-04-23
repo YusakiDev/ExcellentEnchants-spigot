@@ -83,30 +83,58 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
     }
 
     private void updatePassiveEnchantEffects() {
-        Set<PassiveEnchant> readyEnchants = this.passiveEnchants.stream()
-            .peek(PeriodMeta::consumeTicks)
-            .filter(PeriodMeta::isTriggerTime)
-            .collect(Collectors.toSet());
-        if (readyEnchants.isEmpty()) return;
+        try {
+            Set<PassiveEnchant> readyEnchants = this.passiveEnchants.stream()
+                .peek(PeriodMeta::consumeTicks)
+                .filter(PeriodMeta::isTriggerTime)
+                .collect(Collectors.toSet());
+            if (readyEnchants.isEmpty()) return;
 
-        // Get entities but process them individually in their own regions
-        Set<LivingEntity> entities = this.getPassiveEnchantEntities();
-        for (LivingEntity entity : entities) {
-            plugin.getFoliaLib().runAtEntity(entity, task -> {
-                for (PassiveEnchant enchant : readyEnchants) {
-                    EnchantUtils.getEquipped(entity, enchant).forEach((item, level) -> {
-                        if (!enchant.isAvailableToUse(entity)) return;
-                        if (enchant.isOutOfCharges(item)) return;
-                        if (enchant.onTrigger(entity, item, level)) {
-                            enchant.consumeCharges(item, level);
+            // Get entities but process them individually in their own regions
+            Set<LivingEntity> entities = this.getPassiveEnchantEntities();
+            for (LivingEntity entity : entities) {
+                try {
+                    plugin.getFoliaLib().runAtEntity(entity, task -> {
+                        try {
+                            for (PassiveEnchant enchant : readyEnchants) {
+                                EnchantUtils.getEquipped(entity, enchant).forEach((item, level) -> {
+                                    try {
+                                        if (!enchant.isAvailableToUse(entity)) return;
+                                        if (enchant.isOutOfCharges(item)) return;
+                                        if (enchant.onTrigger(entity, item, level)) {
+                                            enchant.consumeCharges(item, level);
+                                        }
+                                    }
+                                    catch (Exception ex) {
+                                        // Log error but continue processing other items
+                                        this.plugin.error("Error processing enchanted item: " + ex.getMessage());
+                                    }
+                                });
+                            }
+                        }
+                        catch (Exception ex) {
+                            // Log error but continue processing other entities
+                            this.plugin.error("Error processing entity enchants: " + ex.getMessage());
                         }
                     });
                 }
-            });
-        }
+                catch (Exception ex) {
+                    // Log entity scheduling error but continue
+                    this.plugin.error("Error scheduling entity task: " + ex.getMessage());
+                }
+            }
 
-        // Update trigger time after processing all entities
-        readyEnchants.forEach(PassiveEnchant::updateTriggerTime);
+            // Update trigger time after processing all entities
+            readyEnchants.forEach(PassiveEnchant::updateTriggerTime);
+        }
+        catch (Exception ex) {
+            // Catch any other errors to prevent timer from stopping
+            this.plugin.error("Error in passive enchant processing: " + ex.getMessage());
+            if (plugin.getFoliaLib().isFolia()) {
+                this.plugin.warn("This error may be related to Folia cross-region entity access.");
+                this.plugin.warn("Consider disabling 'Core.Apply_Passive_Enchants_To_Mobs' in config.yml");
+            }
+        }
     }
 
     @NotNull
@@ -118,17 +146,43 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
 
         // Add mobs if enabled
         if (Config.CORE_PASSIVE_ENCHANTS_FOR_MOBS.get()) {
-            plugin.getServer().getWorlds().stream()
-                .filter(world -> !world.getPlayers().isEmpty())
-                .forEach(world -> {
-                    // Schedule mob collection per-region to be safe
-                    plugin.getFoliaLib().runAtLocation(world.getSpawnLocation(), task -> {
-                        list.addAll(world.getEntitiesByClass(LivingEntity.class));
+            // Instead of trying to access all entities at once, we'll check
+            // configured flags and disable mob enchant checking if on Folia
+            if (plugin.getFoliaLib().isFolia()) {
+                // On Folia, we'll only process players for safety
+                this.plugin.warn("Passive enchantments for mobs are not fully supported on Folia servers.");
+                this.plugin.warn("Only player enchantments will be processed to avoid cross-region threading issues.");
+                // We can't directly modify the ConfigValue, so we'll disable processing here
+                // and recommend users update their config manually
+                this.plugin.warn("Please set 'Core.Apply_Passive_Enchants_To_Mobs: false' in your config.yml");
+            }
+            else {
+                // Original code for non-Folia servers
+                plugin.getServer().getWorlds().stream()
+                    .filter(world -> !world.getPlayers().isEmpty())
+                    .forEach(world -> {
+                        // Schedule mob collection per-region to be safe
+                        plugin.getFoliaLib().runAtLocation(world.getSpawnLocation(), task -> {
+                            try {
+                                list.addAll(world.getEntitiesByClass(LivingEntity.class));
+                            }
+                            catch (Exception e) {
+                                plugin.error("Error collecting entities in world " + world.getName() + ": " + e.getMessage());
+                            }
+                        });
                     });
-                });
+            }
         }
 
-        list.removeIf(entity -> entity.isDead() || !entity.isValid());
+        list.removeIf(entity -> {
+            try {
+                return entity.isDead() || !entity.isValid();
+            }
+            catch (Exception e) {
+                // If we can't check, better remove it
+                return true;
+            }
+        });
         return list;
     }
 }

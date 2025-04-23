@@ -5,6 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentenchants.EnchantsPlugin;
 import su.nightexpress.excellentenchants.api.Modifier;
@@ -16,6 +17,7 @@ import su.nightexpress.excellentenchants.enchantment.impl.EnchantDistribution;
 import su.nightexpress.excellentenchants.enchantment.impl.GameEnchantment;
 import su.nightexpress.excellentenchants.rarity.EnchantRarity;
 import su.nightexpress.excellentenchants.util.ItemCategories;
+import su.nightexpress.excellentenchants.util.EnchantUtils;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.NumberUtil;
@@ -104,71 +106,77 @@ public class SelfRepairingEnchant extends GameEnchantment implements PassiveEnch
 
     @Override
     public boolean onTrigger(@NotNull LivingEntity entity, @NotNull ItemStack item, int level) {
-        // For players, check repair mode first
-        if (entity instanceof Player player) {
-            boolean isHeldItem = false;
-            boolean isArmorItem = false;
-            
-            // Check if this is a held item
-            ItemStack mainHand = player.getInventory().getItemInMainHand();
-            ItemStack offHand = player.getInventory().getItemInOffHand();
-            if (item.equals(mainHand) || item.equals(offHand)) {
-                isHeldItem = true;
-            }
-            
-            // Check if this is an armor item
-            if (this.repairArmor) {
-                for (ItemStack armor : player.getInventory().getArmorContents()) {
-                    if (item.equals(armor)) {
-                        isArmorItem = true;
-                        break;
-                    }
-                }
-            }
-            
-            // Determine if we should repair based on the mode
-            boolean shouldRepair = switch (repairMode) {
-                case HOLDING -> isHeldItem || isArmorItem;
-                case INVENTORY -> !isHeldItem && !isArmorItem;
-                case BOTH -> true;
-            };
-            
-            if (!shouldRepair) {
-                return false;
-            }
-        }
-
-        // Check if item is repairable
-        if (!item.getType().isItem() || item.getType().getMaxDurability() <= 0) {
+        // Basic durability check - if item has no durability, don't bother
+        if (item.getType().getMaxDurability() <= 0) {
             return false;
         }
 
+        // Skip non-damageable items
         if (!(item.getItemMeta() instanceof Damageable damageable)) {
             return false;
         }
 
-        // Check if item needs repair
+        // Skip if already fully repaired
         int damage = damageable.getDamage();
         if (damage <= 0) {
             return false;
         }
 
-        // Calculate repair amount
+        // Skip based on repair mode if the entity is a player
+        if (entity instanceof Player player) {
+            boolean isEquipped = isItemEquipped(player, item);
+
+            // Filter based on the mode. Manager calls us for both equipped and inventory items (when fixed).
+            switch (this.repairMode) {
+                case HOLDING:
+                    if (!isEquipped) return false; // Only repair equipped
+                    break;
+                case INVENTORY:
+                    if (isEquipped) return false; // Only repair non-equipped (in inventory)
+                    break;
+                case BOTH:
+                    // No filtering needed for BOTH mode, manager handles iteration
+                    break;
+            }
+        }
+        // Note: For non-player entities, it implicitly behaves like 'HOLDING' because
+        // the default EnchantManager only iterates equipped items.
+
+        // Calculate and apply repair
         int repairAmount = this.getRepairAmount(level);
         int newDamage = Math.max(0, damage - repairAmount);
         
-        // Apply repair
-        damageable.setDamage(newDamage);
-        item.setItemMeta(damageable);
+        // Only make the change if we actually repaired something
+        if (newDamage < damage) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta instanceof Damageable metaDamageable) {
+                metaDamageable.setDamage(newDamage);
+                item.setItemMeta(meta);
+                return true;
+            }
+        }
         
-        return true;
+        return false;
     }
     
-    private boolean isArmorPiece(ItemStack item) {
-        Material type = item.getType();
-        return type.name().endsWith("_HELMET") || 
-               type.name().endsWith("_CHESTPLATE") || 
-               type.name().endsWith("_LEGGINGS") || 
-               type.name().endsWith("_BOOTS");
+    private boolean isItemEquipped(Player player, ItemStack item) {
+        // Check hands first
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        ItemStack offHand = player.getInventory().getItemInOffHand();
+        if (item.isSimilar(mainHand) || item.isSimilar(offHand)) {
+            return true;
+        }
+
+        // Check armor if armor repair is enabled
+        if (this.repairArmor) {
+            ItemStack[] armor = player.getInventory().getArmorContents();
+            for (ItemStack piece : armor) {
+                if (piece != null && item.isSimilar(piece)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 } 
