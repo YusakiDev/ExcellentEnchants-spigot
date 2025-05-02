@@ -70,11 +70,11 @@ public class TunnelEnchant extends GameEnchantment implements BlockBreakEnchant 
         if (this.disableOnSneak && player.isSneaking()) return false;
 
         Block block = event.getBlock();
-        if (block.getType().isInteractable() && !INTERACTABLE_BLOCKS.contains(block.getType())) return false;
-        if (block.getDrops(item).isEmpty()) return false;
+        //if (block.getType().isInteractable() && !INTERACTABLE_BLOCKS.contains(block.getType())) return false;
+        //if (block.getDrops(item).isEmpty()) return false;
 
         final List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(Lists.newSet(Material.AIR, Material.WATER, Material.LAVA), 10);
-        if (lastTwoTargetBlocks.size() != 2 || !lastTwoTargetBlocks.get(1).getType().isOccluding()) {
+        if (lastTwoTargetBlocks.size() != 2) {
             return false;
         }
         final Block targetBlock = lastTwoTargetBlocks.get(1);
@@ -115,7 +115,6 @@ public class TunnelEnchant extends GameEnchantment implements BlockBreakEnchant 
 
                 // Skip blocks that should not be mined
                 if (blockAdd.equals(block) && depth == 0) continue;
-                if (blockAdd.getDrops(item).isEmpty()) continue;
                 if (blockAdd.isLiquid()) continue;
 
                 Material addType = blockAdd.getType();
@@ -124,7 +123,7 @@ public class TunnelEnchant extends GameEnchantment implements BlockBreakEnchant 
                 if (blockAdd.getType().getHardness() > block.getType().getHardness()) continue;
 
                 // Some extra block checks.
-                if (addType.isInteractable() && !INTERACTABLE_BLOCKS.contains(addType)) continue;
+                //if (addType.isInteractable() && !INTERACTABLE_BLOCKS.contains(addType)) continue;
                 if (addType == Material.BEDROCK || addType == Material.END_PORTAL || addType == Material.END_PORTAL_FRAME) continue;
                 if (addType == Material.OBSIDIAN && addType != block.getType()) continue;
 
