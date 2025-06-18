@@ -5,6 +5,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Barrel;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -46,20 +48,20 @@ public class SilkChestEnchant extends GameEnchantment implements BlockDropEnchan
 
     public static final String ID = "silk_chest";
 
-    private       String        chestName;
-    private       List<String>  chestLore;
-    private final NamespacedKey keyChest;
+    private       String        containerName;
+    private       List<String>  containerLore;
+    private final NamespacedKey keyContainer;
 
     public SilkChestEnchant(@NotNull EnchantsPlugin plugin, @NotNull File file) {
         super(plugin, file, definition(), EnchantDistribution.regular(TradeType.PLAINS_SPECIAL));
 
-        this.keyChest = new NamespacedKey(plugin, ID + ".item");
+        this.keyContainer = new NamespacedKey(plugin, ID + ".item");
     }
 
     @NotNull
     private static EnchantDefinition definition() {
         return EnchantDefinition.create(
-            "Drop chests and saves all its content.",
+            "Drop chests and barrels with all their contents.",
             EnchantRarity.MYTHIC,
             1,
             ItemCategories.TOOL,
@@ -78,42 +80,44 @@ public class SilkChestEnchant extends GameEnchantment implements BlockDropEnchan
 
     @Override
     protected void loadAdditional(@NotNull FileConfig config) {
-        this.chestName = ConfigValue.create("Settings.Chest_Item.Name", "Chest (" + Placeholders.GENERIC_AMOUNT + " items)",
-            "Chest item display name.",
+        this.containerName = ConfigValue.create("Settings.Chest_Item.Name", "Container (" + Placeholders.GENERIC_AMOUNT + " items)",
+            "Container item display name.",
             "Use '" + Placeholders.GENERIC_AMOUNT + "' for items amount."
         ).read(config);
 
-        this.chestLore = ConfigValue.create("Settings.Chest_Item.Lore", new ArrayList<>(),
-            "Chest item lore.",
+        this.containerLore = ConfigValue.create("Settings.Chest_Item.Lore", new ArrayList<>(),
+            "Container item lore.",
             "Use '" + Placeholders.GENERIC_AMOUNT + "' for items amount."
         ).read(config);
     }
 
-    public boolean isSilkChest(@NotNull ItemStack item) {
-        return PDCUtil.getBoolean(item, this.keyChest).isPresent();
+    public boolean isSilkContainer(@NotNull ItemStack item) {
+        return PDCUtil.getBoolean(item, this.keyContainer).isPresent();
     }
 
     @NotNull
-    public ItemStack getSilkChest(@NotNull Chest chest) {
-        ItemStack chestStack = new ItemStack(chest.getType());
+    public ItemStack getSilkContainer(@NotNull Container container) {
+        ItemStack containerStack = new ItemStack(container.getType());
 
-        BlockStateMeta stateMeta = (BlockStateMeta) chestStack.getItemMeta();
-        if (stateMeta == null) return chestStack;
+        BlockStateMeta stateMeta = (BlockStateMeta) containerStack.getItemMeta();
+        if (stateMeta == null) return containerStack;
 
-        Chest chestItem = (Chest) stateMeta.getBlockState();
-        chestItem.getBlockInventory().setContents(chest.getBlockInventory().getContents());
-        chestItem.update(true);
+        BlockState containerState = stateMeta.getBlockState();
+        if (!(containerState instanceof Container containerItem)) return containerStack;
+        
+        containerItem.getInventory().setContents(container.getInventory().getContents());
+        containerItem.update(true);
 
-        int amount = (int) Stream.of(chestItem.getBlockInventory().getContents()).filter(i -> i != null && !i.getType().isAir()).count();
+        int amount = (int) Stream.of(containerItem.getInventory().getContents()).filter(i -> i != null && !i.getType().isAir()).count();
 
-        stateMeta.setBlockState(chestItem);
-        stateMeta.setDisplayName(this.chestName);
-        stateMeta.setLore(this.chestLore);
-        chestStack.setItemMeta(stateMeta);
+        stateMeta.setBlockState(containerItem);
+        stateMeta.setDisplayName(this.containerName);
+        stateMeta.setLore(this.containerLore);
+        containerStack.setItemMeta(stateMeta);
 
-        ItemReplacer.replace(chestStack, str -> str.replace(Placeholders.GENERIC_AMOUNT, String.valueOf(amount)));
-        PDCUtil.set(chestStack, this.keyChest, true);
-        return chestStack;
+        ItemReplacer.replace(containerStack, str -> str.replace(Placeholders.GENERIC_AMOUNT, String.valueOf(amount)));
+        PDCUtil.set(containerStack, this.keyContainer, true);
+        return containerStack;
     }
 
     @Override
@@ -121,50 +125,59 @@ public class SilkChestEnchant extends GameEnchantment implements BlockDropEnchan
                           @NotNull LivingEntity player, @NotNull ItemStack item, int level) {
         BlockState state = event.getBlockState();
 
-        if (!(state instanceof Chest chest)) return false;
+        // Only support Chest and Barrel types specifically
+        if (!(state instanceof Chest || state instanceof Barrel)) return false;
+        
+        if (!(state instanceof Container container)) return false;
 
-        // Remove original chest from drops to prevent duplication.
+        // Remove original container from drops to prevent duplication
         AtomicBoolean originRemoved = new AtomicBoolean(false);
         event.getItems().removeIf(drop -> drop.getItemStack().getType() == state.getType() && drop.getItemStack().getAmount() == 1 && !originRemoved.getAndSet(true));
-        // Add chest content back to the chest.
-        chest.getBlockInventory().addItem(event.getItems().stream().map(Item::getItemStack).toList().toArray(new ItemStack[0]));
-        // Drop nothing of chest content.
+        
+        // Add container content back to the container
+        container.getInventory().addItem(event.getItems().stream().map(Item::getItemStack).toList().toArray(new ItemStack[0]));
+        
+        // Drop nothing of container content
         event.getItems().clear();
 
-        if (chest.getBlockInventory().isEmpty()) {
-            this.plugin.populateResource(event, new ItemStack(chest.getType()));
+        if (container.getInventory().isEmpty()) {
+            this.plugin.populateResource(event, new ItemStack(container.getType()));
             return false;
         }
 
-        this.plugin.populateResource(event, this.getSilkChest(chest));
+        this.plugin.populateResource(event, this.getSilkContainer(container));
 
-        chest.getBlockInventory().clear();
+        container.getInventory().clear();
 
         return true;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSilkChestPlace(BlockPlaceEvent event) {
+    public void onSilkContainerPlace(BlockPlaceEvent event) {
         ItemStack item = event.getItemInHand();
         if (item.getType().isAir()) return;
 
         Block block = event.getBlockPlaced();
         BlockState state = block.getState();
-        if (!(state instanceof Chest chest)) return;
+        
+        // Only handle Chest and Barrel types
+        if (!(state instanceof Chest || state instanceof Barrel)) return;
+        
+        if (!(state instanceof Container container)) return;
 
-        chest.setCustomName(null);
-        chest.update(true);
+        container.setCustomName(null);
+        container.update(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onSilkChestStore(InventoryClickEvent event) {
+    public void onSilkContainerStore(InventoryClickEvent event) {
         Inventory inventory = event.getInventory();
         if (inventory.getType() != InventoryType.CRAFTING) {
             int hotkey = event.getHotbarButton();
             if (hotkey >= 0) {
                 Player player = (Player) event.getWhoClicked();
                 ItemStack hotItem = player.getInventory().getItem(hotkey);
-                if (hotItem != null && this.isSilkChest(hotItem)) {
+                if (hotItem != null && this.isSilkContainer(hotItem)) {
                     event.setCancelled(true);
                     return;
                 }
@@ -173,7 +186,7 @@ public class SilkChestEnchant extends GameEnchantment implements BlockDropEnchan
             ItemStack item = event.getCurrentItem();
             if (item == null) return;
 
-            if (this.isSilkChest(item)) {
+            if (this.isSilkContainer(item)) {
                 event.setCancelled(true);
                 return;
             }
@@ -187,14 +200,14 @@ public class SilkChestEnchant extends GameEnchantment implements BlockDropEnchan
         boolean isRightClick = (event.isRightClick() && !event.isShiftClick()) || event.getClick() == ClickType.CREATIVE;
         if (item.getType() == Material.BUNDLE && isRightClick) {
             ItemStack cursor = event.getView().getCursor(); // Creative is shit, undetectable.
-            if (cursor != null && this.isSilkChest(cursor)) {
+            if (cursor != null && this.isSilkContainer(cursor)) {
                 event.setCancelled(true);
             }
         }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onSilkChestHopper(InventoryPickupItemEvent event) {
-        event.setCancelled(this.isSilkChest(event.getItem().getItemStack()));
+    public void onSilkContainerHopper(InventoryPickupItemEvent event) {
+        event.setCancelled(this.isSilkContainer(event.getItem().getItemStack()));
     }
 }

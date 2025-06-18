@@ -146,6 +146,7 @@ public class EnchantRegistry extends SimpleManager<EnchantsPlugin> {
         this.register(EnchantmentID.REBOUND, file -> new ReboundEnchant(plugin, file));
         this.register(StoppingForceEnchant.ID, file -> new StoppingForceEnchant(plugin, file));
         this.register(SpeedyEnchant.ID, file -> new SpeedyEnchant(plugin, file));
+        this.register(VitalityEnchant.ID, file -> new VitalityEnchant(plugin, file));
 
         // Bow enchants
         this.register(BomberEnchant.ID, file -> new BomberEnchant(plugin, file));
