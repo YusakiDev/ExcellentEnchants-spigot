@@ -42,7 +42,7 @@ public class AutoReelEnchant extends GameEnchantment implements FishingEnchant {
         EquipmentSlot slot = EnchantUtils.getItemHand(player, Material.FISHING_ROD);
         if (slot == null) return false;
 
-        this.plugin.getFoliaLib().runAtEntity(player, task -> {
+        this.plugin.getFoliaLibWrapper().runAtEntity(player, task -> {
             if (event.isCancelled()) return;
             if (!event.getHook().isValid()) return;
 

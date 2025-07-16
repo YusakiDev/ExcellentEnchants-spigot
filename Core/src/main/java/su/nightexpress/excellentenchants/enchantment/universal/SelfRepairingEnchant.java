@@ -8,21 +8,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentenchants.EnchantsPlugin;
 import su.nightexpress.excellentenchants.api.Modifier;
-import su.nightexpress.excellentenchants.api.enchantment.TradeType;
+import su.nightexpress.excellentenchants.api.EnchantData;
+import su.nightexpress.excellentenchants.api.enchantment.component.EnchantComponent;
 import su.nightexpress.excellentenchants.api.enchantment.meta.Period;
 import su.nightexpress.excellentenchants.api.enchantment.type.PassiveEnchant;
-import su.nightexpress.excellentenchants.enchantment.impl.EnchantDefinition;
-import su.nightexpress.excellentenchants.enchantment.impl.EnchantDistribution;
-import su.nightexpress.excellentenchants.enchantment.impl.GameEnchantment;
-import su.nightexpress.excellentenchants.rarity.EnchantRarity;
-import su.nightexpress.excellentenchants.util.ItemCategories;
+import su.nightexpress.excellentenchants.enchantment.GameEnchantment;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 import java.io.File;
 
-import static su.nightexpress.excellentenchants.Placeholders.GENERIC_AMOUNT;
+import static su.nightexpress.excellentenchants.api.EnchantsPlaceholders.GENERIC_AMOUNT;
 
 public class SelfRepairingEnchant extends GameEnchantment implements PassiveEnchant {
 
@@ -57,26 +54,17 @@ public class SelfRepairingEnchant extends GameEnchantment implements PassiveEnch
     private RepairMode repairMode;
     private boolean repairArmor;
 
-    public SelfRepairingEnchant(@NotNull EnchantsPlugin plugin, @NotNull File file) {
-        super(plugin, file, definition(), EnchantDistribution.treasure(TradeType.SAVANNA_SPECIAL));
+    public SelfRepairingEnchant(@NotNull EnchantsPlugin plugin, @NotNull File file, @NotNull EnchantData data) {
+        super(plugin, file, data);
+        this.addComponent(EnchantComponent.PERIODIC, Period.ofSeconds(5));
     }
 
-    @NotNull
-    private static EnchantDefinition definition() {
-        return EnchantDefinition.create(
-            "Repairs " + GENERIC_AMOUNT + " durability points over time.",
-            EnchantRarity.RARE,
-            3,
-            ItemCategories.BREAKABLE
-        );
-    }
 
     @Override
     protected void loadAdditional(@NotNull FileConfig config) {
-        this.meta.setPeriod(Period.create(config));
 
-        this.repairAmount = Modifier.read(config, "Settings.Repair.Amount",
-            Modifier.add(1, 1, 1, 10),
+        this.repairAmount = Modifier.load(config, "Settings.Repair.Amount",
+            Modifier.addictive(1).perLevel(1).capacity(10),
             "Amount of durability points to be repaired per trigger."
         );
 

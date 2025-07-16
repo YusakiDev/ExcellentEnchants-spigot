@@ -150,7 +150,7 @@ public class ReplanterEnchant extends GameEnchantment implements InteractEnchant
 
         // Replant the gathered crops with a new one.
         if (this.takeSeeds(player, dataPlant.getPlacementMaterial())) {
-            this.plugin.getFoliaLib().runAtLocation(blockPlant.getLocation(), task -> {
+            this.plugin.getFoliaLibWrapper().runAtLocation(blockPlant.getLocation(), task -> {
                 blockPlant.setType(plant.getMaterial());
                 plant.setAge(0);
                 blockPlant.setBlockData(plant);

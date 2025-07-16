@@ -54,20 +54,18 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
     public void enable() {
         this.loadAPI();
 
-        if (Version.isSpigot()) {
-            this.loadInternals();
-            if (this.registryHack == null) {
-                this.error("Unsupported server version!");
-                this.getPluginManager().disablePlugin(this);
-                return;
-            }
-
-            File dataDir = this.getDataFolder();
-
-            ConfigBridge.load(dataDir, false); // Load distribution config, assign isPaper field.
-            ItemSetRegistry.load(dataDir); // Load default item types, uses ConfigBridge.isPaper() to determine which items source to use.
-            EnchantDefaults.load(dataDir); // Load defaults and read from the config files Definition and Distribution settings for enchants.
+        this.loadInternals();
+        if (this.registryHack == null) {
+            this.error("Unsupported server version!");
+            this.getPluginManager().disablePlugin(this);
+            return;
         }
+
+        File dataDir = this.getDataFolder();
+
+        ConfigBridge.load(dataDir, false); // Load distribution config, assign isPaper field.
+        ItemSetRegistry.load(dataDir); // Load default item types, uses ConfigBridge.isPaper() to determine which items source to use.
+        EnchantDefaults.load(dataDir); // Load defaults and read from the config files Definition and Distribution settings for enchants.
 
         if (!EnchantRegistry.isLocked()) {
             EnchantProviders.load(this);
@@ -144,7 +142,7 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
     }
 
     @NotNull
-    public FoliaLibWrapper getFoliaLib() {
+    public FoliaLibWrapper getFoliaLibWrapper() {
         return this.foliaLib;
     }
 }
