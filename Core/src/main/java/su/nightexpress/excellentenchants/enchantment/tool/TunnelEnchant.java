@@ -25,12 +25,7 @@ import java.util.Set;
 
 public class TunnelEnchant extends GameEnchantment implements MiningEnchant {
 
-<<<<<<< HEAD:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/impl/tool/TunnelEnchant.java
-    public static final String   ID                   = "power_mine";
-    // X and Z oftunneleach block AoE mined
-=======
     // X and Z offsets for each block AoE mined
->>>>>>> origin/master:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/tool/TunnelEnchant.java
     private static final int[][] MINING_COORD_OFFSETS = new int[][]{{0, 0}, {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1},};
     private static final Set<Material> INTERACTABLE_BLOCKS = new HashSet<>();
 
@@ -41,25 +36,8 @@ public class TunnelEnchant extends GameEnchantment implements MiningEnchant {
 
     private boolean disableOnSneak;
 
-<<<<<<< HEAD:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/impl/tool/TunnelEnchant.java
-    public TunnelEnchant(@NotNull EnchantsPlugin plugin, @NotNull File file) {
-        super(plugin, file, definition(), EnchantDistribution.treasure(TradeType.SWAMP_SPECIAL));
-    }
-
-    @NotNull
-    private static EnchantDefinition definition() {
-        return EnchantDefinition.create(
-            Lists.newList("Mines multiple blocks at once in a 3x3 shape. Higher levels increase mining depth."),
-            EnchantRarity.MYTHIC,
-            3,
-            ItemCategories.TOOL,
-            ItemCategories.PICKAXE,
-            Lists.newSet(VeinminerEnchant.ID, BlastMiningEnchant.ID)
-        );
-=======
     public TunnelEnchant(@NotNull EnchantsPlugin plugin, @NotNull File file, @NotNull EnchantData data) {
         super(plugin, file, data);
->>>>>>> origin/master:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/tool/TunnelEnchant.java
     }
 
     @Override

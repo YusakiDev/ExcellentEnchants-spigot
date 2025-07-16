@@ -30,13 +30,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-<<<<<<< HEAD:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/impl/tool/ReplanterEnchant.java
-public class ReplanterEnchant extends GameEnchantment implements ChanceMeta, InteractEnchant, BlockBreakEnchant {
-
-    public static final String ID = "replenish";
-=======
 public class ReplanterEnchant extends GameEnchantment implements InteractEnchant, MiningEnchant {
->>>>>>> origin/master:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/tool/ReplanterEnchant.java
 
     private boolean replantOnRightClick;
     private boolean replantOnPlantBreak;

@@ -27,15 +27,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-<<<<<<< HEAD:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/impl/tool/VeinminerEnchant.java
-import static su.nightexpress.excellentenchants.Placeholders.GENERIC_AMOUNT;
-
-public class VeinminerEnchant extends GameEnchantment implements BlockBreakEnchant {
-
-    public static final String ID = "vein_miner";
-=======
 public class VeinminerEnchant extends GameEnchantment implements MiningEnchant {
->>>>>>> origin/master:Core/src/main/java/su/nightexpress/excellentenchants/enchantment/tool/VeinminerEnchant.java
 
     private static final BlockFace[] AREA = {
         BlockFace.UP, BlockFace.DOWN, BlockFace.EAST,

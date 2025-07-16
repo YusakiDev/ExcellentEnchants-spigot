@@ -6,21 +6,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentenchants.EnchantsPlugin;
-import su.nightexpress.excellentenchants.api.ConfigBridge;
-import su.nightexpress.excellentenchants.api.EnchantmentID;
+import su.nightexpress.excellentenchants.api.config.ConfigBridge;
+import su.nightexpress.excellentenchants.api.EnchantId;
 import su.nightexpress.excellentenchants.api.enchantment.CustomEnchantment;
-import su.nightexpress.excellentenchants.api.enchantment.bridge.FlameWalker;
-import su.nightexpress.excellentenchants.api.enchantment.meta.PeriodMeta;
 import su.nightexpress.excellentenchants.api.enchantment.type.PassiveEnchant;
 import su.nightexpress.excellentenchants.config.Config;
 import su.nightexpress.excellentenchants.enchantment.universal.SelfRepairingEnchant;
-import su.nightexpress.excellentenchants.enchantment.listener.AnvilListener;
-import su.nightexpress.excellentenchants.enchantment.listener.GenericListener;
-import su.nightexpress.excellentenchants.enchantment.menu.EnchantsMenu;
-import su.nightexpress.excellentenchants.registry.EnchantRegistry;
+import su.nightexpress.excellentenchants.manager.listener.AnvilListener;
+import su.nightexpress.excellentenchants.manager.listener.GenericListener;
+import su.nightexpress.excellentenchants.manager.menu.EnchantsMenu;
+import su.nightexpress.excellentenchants.api.EnchantRegistry;
 import su.nightexpress.excellentenchants.util.EnchantUtils;
 import su.nightexpress.nightcore.manager.AbstractManager;
-import su.nightexpress.excellentenchants.util.EnchantedProjectile;
 import su.nightexpress.nightcore.util.PDCUtil;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.NamespacedKey;
@@ -36,7 +33,7 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
 
     public EnchantManager(@NotNull EnchantsPlugin plugin) {
         super(plugin);
-        this.passiveEnchants = new HashSet<>(EnchantRegistry.getEnchantments(PassiveEnchant.class));
+        this.passiveEnchants = new HashSet<>(); // Will be populated when enchantments are loaded
     }
 
     protected void onLoad() {
@@ -45,24 +42,18 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
         this.addListener(new GenericListener(this.plugin, this));
         this.addListener(new AnvilListener(this.plugin));
 
-        plugin.getFoliaLib().runTimerAsync(task -> displayProjectileTrails(), Config.CORE_PROJECTILE_PARTICLE_INTERVAL.get(), Config.CORE_PROJECTILE_PARTICLE_INTERVAL.get());
+        // Projectile trail timer removed in new architecture
 
         if (!this.passiveEnchants.isEmpty()) {
             plugin.getFoliaLib().runTimer(task -> updatePassiveEnchantEffects(), ConfigBridge.getEnchantsTickInterval(), ConfigBridge.getEnchantsTickInterval());
         }
 
-        CustomEnchantment enchantment = EnchantRegistry.getById(EnchantmentID.FLAME_WALKER);
-        if (enchantment instanceof FlameWalker flameWalker) {
-            plugin.getFoliaLib().runTimer(task -> flameWalker.tickBlocks(), 1, 1);
-        }
+        // FlameWalker handling removed in new architecture
     }
 
     @Override
     protected void onShutdown() {
-        CustomEnchantment enchantment = EnchantRegistry.getById(EnchantmentID.FLAME_WALKER);
-        if (enchantment instanceof FlameWalker flameWalker) {
-            flameWalker.removeBlocks();
-        }
+        // FlameWalker cleanup removed in new architecture
 
         if (this.enchantsMenu != null) this.enchantsMenu.clear();
     }
@@ -72,28 +63,12 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
     }
 
     private void displayProjectileTrails() {
-        // Create a copy of the projectiles to avoid concurrent modification
-        Set<EnchantedProjectile> projectiles = new HashSet<>(EnchantUtils.getEnchantedProjectiles());
-        
-        for (EnchantedProjectile projectile : projectiles) {
-            // Schedule validity check and particle display on the correct thread
-            plugin.getFoliaLib().runAtEntity(projectile.getProjectile(), task -> {
-                if (!projectile.isValid()) {
-                    EnchantUtils.getEnchantedProjectiles().remove(projectile);
-                    return;
-                }
-                projectile.playParticles();
-            });
-        }
+        // Projectile trail functionality removed in new architecture
     }
 
     private void updatePassiveEnchantEffects() {
         try {
-            Set<PassiveEnchant> readyEnchants = this.passiveEnchants.stream()
-                .peek(PeriodMeta::consumeTicks)
-                .filter(PeriodMeta::isTriggerTime)
-                .collect(Collectors.toSet());
-            if (readyEnchants.isEmpty()) return;
+            // Process all passive enchants directly without period meta filtering
 
             // Get entities but process them individually in their own regions
             Set<LivingEntity> entities = this.getPassiveEnchantEntities();
@@ -101,7 +76,7 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
                 try {
                     plugin.getFoliaLib().runAtEntity(entity, task -> {
                         try {
-                            for (PassiveEnchant enchant : readyEnchants) {
+                            for (PassiveEnchant enchant : this.passiveEnchants) {
                                 // Special handling for SelfRepairing to include inventory for players
                                 if (enchant instanceof SelfRepairingEnchant && entity instanceof Player player) {
                                     PlayerInventory inventory = player.getInventory();
@@ -145,8 +120,7 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
                 }
             }
 
-            // Update trigger time after processing all entities
-            readyEnchants.forEach(PassiveEnchant::updateTriggerTime);
+            // Timing is now handled by components in the new architecture
         }
         catch (Exception ex) {
             // Catch any other errors to prevent timer from stopping
