@@ -54,11 +54,13 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
     public void enable() {
         this.loadAPI();
 
-        this.loadInternals();
-        if (this.registryHack == null) {
-            this.error("Unsupported server version!");
-            this.getPluginManager().disablePlugin(this);
-            return;
+        if (Version.isSpigot()) {
+            this.loadInternals();
+            if (this.registryHack == null) {
+                this.error("Unsupported server version!");
+                this.getPluginManager().disablePlugin(this);
+                return;
+            }
         }
 
         File dataDir = this.getDataFolder();

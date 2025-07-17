@@ -133,6 +133,7 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
             bukkitEnchant = this.plugin.getRegistryHack().registerEnchantment(enchantment);
         }
         else {
+            // Paper and Folia - use datapack system
             bukkitEnchant = RegistryType.ENCHANTMENT.getRegistry().get(EnchantKeys.custom(id));
         }
 
