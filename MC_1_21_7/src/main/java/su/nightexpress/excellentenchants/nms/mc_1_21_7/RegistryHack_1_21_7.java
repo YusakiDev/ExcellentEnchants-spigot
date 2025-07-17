@@ -34,6 +34,7 @@ import su.nightexpress.excellentenchants.api.wrapper.EnchantCost;
 import su.nightexpress.excellentenchants.api.wrapper.EnchantDefinition;
 import su.nightexpress.excellentenchants.api.wrapper.EnchantDistribution;
 import su.nightexpress.excellentenchants.api.wrapper.TradeType;
+import com.tcoded.folialib.FoliaLib;
 import su.nightexpress.excellentenchants.nms.RegistryHack;
 import su.nightexpress.nightcore.NightPlugin;
 import su.nightexpress.nightcore.util.Reflex;
@@ -49,10 +50,16 @@ public class RegistryHack_1_21_7 implements RegistryHack {
     private static final MappedRegistry<Enchantment> ENCHANTS;
     private static final MappedRegistry<Item>        ITEMS;
 
-    private static final String REGISTRY_FROZEN_TAGS_FIELD = "j"; // frozenTags
-    private static final String REGISTRY_ALL_TAGS_FIELD    = "k"; // allTags
+    // Spigot obfuscated field names
+    private static final String REGISTRY_FROZEN_TAGS_FIELD_SPIGOT = "j"; // frozenTags
+    private static final String REGISTRY_ALL_TAGS_FIELD_SPIGOT    = "k"; // allTags
+    private static final String TAG_SET_MAP_FIELD_SPIGOT          = "a"; // val$map for Spigot
+    
+    // Folia/Paper actual field names (not obfuscated)
+    private static final String REGISTRY_FROZEN_TAGS_FIELD_FOLIA = "frozenTags"; // frozenTags
+    private static final String REGISTRY_ALL_TAGS_FIELD_FOLIA    = "allTags"; // allTags
+    
     private static final String TAG_SET_UNBOUND_METHOD     = "a"; // .unbound()
-    private static final String TAG_SET_MAP_FIELD          = "a"; // val$map for PaperMC
 
     static {
         SERVER = ((CraftServer) Bukkit.getServer()).getServer();
@@ -61,9 +68,11 @@ public class RegistryHack_1_21_7 implements RegistryHack {
     }
 
     private final NightPlugin plugin;
+    private final boolean isFolia;
 
     public RegistryHack_1_21_7(@NotNull NightPlugin plugin) {
         this.plugin = plugin;
+        this.isFolia = new FoliaLib(plugin).isFolia();
     }
 
     @NotNull
@@ -95,84 +104,177 @@ public class RegistryHack_1_21_7 implements RegistryHack {
 
     @SuppressWarnings("unchecked")
     @NotNull
-    private static <T> Map<TagKey<T>, HolderSet.Named<T>> getFrozenTags(@NotNull MappedRegistry<T> registry) {
-        return (Map<TagKey<T>, HolderSet.Named<T>>) Reflex.getFieldValue(registry, REGISTRY_FROZEN_TAGS_FIELD);
+    private <T> Map<TagKey<T>, HolderSet.Named<T>> getFrozenTags(@NotNull MappedRegistry<T> registry) {
+        String fieldName = this.isFolia ? REGISTRY_FROZEN_TAGS_FIELD_FOLIA : REGISTRY_FROZEN_TAGS_FIELD_SPIGOT;
+        return (Map<TagKey<T>, HolderSet.Named<T>>) Reflex.getFieldValue(registry, fieldName);
     }
 
     @NotNull
-    private static <T> Object getAllTags(@NotNull MappedRegistry<T> registry) {
-        return Reflex.getFieldValue(registry, REGISTRY_ALL_TAGS_FIELD);
+    private <T> Object getAllTags(@NotNull MappedRegistry<T> registry) {
+        String fieldName = this.isFolia ? REGISTRY_ALL_TAGS_FIELD_FOLIA : REGISTRY_ALL_TAGS_FIELD_SPIGOT;
+        return Reflex.getFieldValue(registry, fieldName);
     }
 
     @SuppressWarnings("unchecked")
     @NotNull
-    private static <T> Map<TagKey<T>, HolderSet.Named<T>> getTagsMap(@NotNull Object tagSet) {
-        // new HashMap, because original is ImmutableMap.
-        return new HashMap<>((Map<TagKey<T>, HolderSet.Named<T>>) Reflex.getFieldValue(tagSet, TAG_SET_MAP_FIELD));
+    private <T> Map<TagKey<T>, HolderSet.Named<T>> getTagsMap(@NotNull Object tagSet, @NotNull MappedRegistry<T> registry) {
+        if (this.isFolia) {
+            // For Folia/Paper: TagSet is an interface with anonymous implementations
+            // We can't access the map field directly, so we use the frozenTags from registry instead
+            return new HashMap<>(this.getFrozenTags(registry));
+        } else {
+            // For Spigot: Use reflection to get the map field from TagSet
+            Object mapObj = Reflex.getFieldValue(tagSet, TAG_SET_MAP_FIELD_SPIGOT);
+            if (mapObj == null) {
+                this.plugin.warn("Failed to get TagSet map field, using empty map as fallback");
+                return new HashMap<>();
+            }
+            return new HashMap<>((Map<TagKey<T>, HolderSet.Named<T>>) mapObj);
+        }
     }
 
     @Override
     public void unfreezeRegistry() {
-        unfreeze(ENCHANTS);
-        unfreeze(ITEMS);
+        System.out.println("[DEBUG] Starting unfreezeRegistry()");
+        this.unfreeze(ENCHANTS);
+        this.unfreeze(ITEMS);
 
-        ItemSetRegistry.getByIdMap().forEach(RegistryHack_1_21_7::createItemsSet);
+        System.out.println("[DEBUG] Creating item sets. Total sets: " + ItemSetRegistry.getByIdMap().size());
+        ItemSetRegistry.getByIdMap().forEach((id, itemSet) -> {
+            System.out.println("[DEBUG] Processing item set: " + id);
+            this.createItemsSet(id, itemSet);
+        });
+        System.out.println("[DEBUG] Finished unfreezeRegistry()");
     }
 
     @Override
     public void freezeRegistry() {
-        freeze(ITEMS);
-        freeze(ENCHANTS);
+        this.freeze(ITEMS);
+        this.freeze(ENCHANTS);
         //this.displayTags();
     }
 
-    private static <T> void unfreeze(@NotNull MappedRegistry<T> registry) {
-        Reflex.setFieldValue(registry, "l", false);             // MappedRegistry#frozen
-        Reflex.setFieldValue(registry, "m", new IdentityHashMap<>()); // MappedRegistry#unregisteredIntrusiveHolders
+    private <T> void unfreeze(@NotNull MappedRegistry<T> registry) {
+        if (this.isFolia) {
+            // For Folia/Paper: use actual field names
+            Reflex.setFieldValue(registry, "frozen", false);
+            Reflex.setFieldValue(registry, "unregisteredIntrusiveHolders", new IdentityHashMap<>());
+        } else {
+            // For Spigot: use obfuscated field names
+            Reflex.setFieldValue(registry, "l", false);             // MappedRegistry#frozen
+            Reflex.setFieldValue(registry, "m", new IdentityHashMap<>()); // MappedRegistry#unregisteredIntrusiveHolders
+        }
     }
 
-    private static <T> void freeze(@NotNull MappedRegistry<T> registry) {
+    private <T> void freeze(@NotNull MappedRegistry<T> registry) {
         // Get original TagSet object of the registry before unbound.
         // We MUST keep original TagSet object and only modify an inner map object inside it.
         // Otherwise it will throw an Network Error on client join because of 'broken' tags that were bound to other TagSet object.
-        Object tagSet = getAllTags(registry);
+        Object tagSet = this.getAllTags(registry);
 
         // Get a copy of original TagSet's tags map.
-        Map<TagKey<T>, HolderSet.Named<T>> tagsMap = getTagsMap(tagSet);
+        Map<TagKey<T>, HolderSet.Named<T>> tagsMap = this.getTagsMap(tagSet, registry);
         // Get 'frozenTags' map with all tags of the registry.
-        Map<TagKey<T>, HolderSet.Named<T>> frozenTags = getFrozenTags(registry);
+        Map<TagKey<T>, HolderSet.Named<T>> frozenTags = this.getFrozenTags(registry);
 
         // Here we add all registered and bound vanilla tags to the 'frozenTags' map for further freeze & bind.
         // For some reason 'frozenTags' map does not contain all the tags, so some of them will be absent if not added back here
         // and result in broken gameplay features.
         tagsMap.forEach(frozenTags::putIfAbsent);
 
-        // We MUST 'unbound' the registry tags to be able to call .freeze() method of it.
-        // Otherwise it will throw an error saying tags are not bound.
-        unbound(registry);
+        if (!this.isFolia) {
+            // For Spigot: We MUST 'unbound' the registry tags to be able to call .freeze() method
+            // Otherwise it will throw an error saying tags are not bound.
+            this.unbound(registry);
+        }
+        // For Folia: Skip unbound step as the registry system works differently
 
-        // This method will register all tags from the 'frozenTags' map and assign a new TagSet object to the 'allTags' field of registry.
-        // But we MUST replace the 'allTags' field value with the original (before unbound) TagSet object to prevent Network Error for clients.
-        registry.freeze();
-
-        // Here we need to put in 'tagsMap' map of TagSet object all new/custom registered tags.
-        // Otherwise it will cause Network Error because custom tags are not present in the TagSet tags map.
-        frozenTags.forEach(tagsMap::putIfAbsent);
-
-        // Update inner tags map of the TagSet object that is 'allTags' field of the registry.
-        Reflex.setFieldValue(tagSet, TAG_SET_MAP_FIELD, tagsMap);
-        // Assign original TagSet object with modified tags map to the 'allTags' field of the registry.
-        Reflex.setFieldValue(registry, REGISTRY_ALL_TAGS_FIELD, tagSet);
+        if (!this.isFolia) {
+            // For Spigot: This method will register all tags from the 'frozenTags' map and assign a new TagSet object to the 'allTags' field of registry.
+            // But we MUST replace the 'allTags' field value with the original (before unbound) TagSet object to prevent Network Error for clients.
+            registry.freeze();
+            
+            this.updateTagSetForNetworkSync(registry, tagSet, tagsMap, frozenTags);
+        } else {
+            // For Folia: Skip manual freeze() call but update TagSet for network sync
+            System.out.println("[DEBUG] Folia: Skipping registry.freeze() but updating TagSet for network sync");
+            this.updateTagSetForNetworkSync(registry, tagSet, tagsMap, frozenTags);
+        }
     }
 
-    private static <T> void unbound(@NotNull MappedRegistry<T> registry) {
-        Class<?> tagSetClass = Reflex.getInnerClass(MappedRegistry.class.getName(), "a");  // TagSet for PaperMC
-        if (tagSetClass == null) throw new IllegalStateException("TagSet class not found!");
+    private <T> void updateTagSetForNetworkSync(@NotNull MappedRegistry<T> registry, 
+                                               @NotNull Object tagSet,
+                                               @NotNull Map<TagKey<T>, HolderSet.Named<T>> tagsMap,
+                                               @NotNull Map<TagKey<T>, HolderSet.Named<T>> frozenTags) {
+        if (!this.isFolia) {
+            // For Spigot: Complex TagSet manipulation is needed
+            // Here we need to put in 'tagsMap' map of TagSet object all new/custom registered tags.
+            // Otherwise it will cause Network Error because custom tags are not present in the TagSet tags map.
+            frozenTags.forEach(tagsMap::putIfAbsent);
 
-        Method unboundMethod = Reflex.getMethod(tagSetClass, TAG_SET_UNBOUND_METHOD);
-        Object unboundTagSet = Reflex.invokeMethod(unboundMethod, registry); // new TagSet object.
+            // Update inner tags map of the TagSet object
+            Reflex.setFieldValue(tagSet, TAG_SET_MAP_FIELD_SPIGOT, tagsMap);
+            
+            // Assign original TagSet object with modified tags map to the 'allTags' field of the registry.
+            Reflex.setFieldValue(registry, REGISTRY_ALL_TAGS_FIELD_SPIGOT, tagSet);
+        } else {
+            // For Folia: Don't replace TagSet at all - but let's test if our tags are actually resolvable
+            String registryName = registry == ITEMS ? "ITEMS" : (registry == ENCHANTS ? "ENCHANTS" : "UNKNOWN");
+            System.out.println("[DEBUG] Folia: Testing tag resolution for " + registryName + " registry. FrozenTags: " + frozenTags.size());
+            
+            // Count custom tags that are already present
+            long customTagCount = frozenTags.keySet().stream()
+                .filter(tag -> tag.location().getNamespace().equals("excellentenchants"))
+                .count();
+            
+            System.out.println("[DEBUG] " + registryName + " found " + customTagCount + " custom tags in frozenTags");
+            
+            // Test if our custom tags are actually resolvable through the registry
+            frozenTags.keySet().stream()
+                .filter(tag -> tag.location().getNamespace().equals("excellentenchants"))
+                .forEach(tag -> {
+                    System.out.println("[DEBUG] " + registryName + " custom tag verified in frozenTags: " + tag.location());
+                    
+                    // Test if the tag is actually resolvable through the registry's get() method
+                    try {
+                        java.util.Optional<?> result = registry.get(tag);
+                        if (result.isPresent()) {
+                            System.out.println("[DEBUG] " + registryName + " tag RESOLVABLE through registry.get(): " + tag.location());
+                        } else {
+                            System.out.println("[DEBUG] " + registryName + " tag NOT RESOLVABLE through registry.get(): " + tag.location() + " - THIS IS THE PROBLEM!");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("[DEBUG] " + registryName + " tag resolution FAILED for " + tag.location() + ": " + e.getMessage());
+                    }
+                });
+            
+            System.out.println("[DEBUG] " + registryName + ": Using vanilla Folia registry sync for custom tags (no TagSet modification)");
+        }
+    }
 
-        Reflex.setFieldValue(registry, REGISTRY_ALL_TAGS_FIELD, unboundTagSet);
+    private <T> void unbound(@NotNull MappedRegistry<T> registry) {
+        if (this.isFolia) {
+            // For Folia/Paper: TagSet.unbound() is a static method
+            // We'll create a new unbound TagSet using the static method
+            try {
+                Class<?> tagSetClass = Class.forName("net.minecraft.core.MappedRegistry$TagSet");
+                Method unboundMethod = tagSetClass.getMethod("unbound");
+                Object unboundTagSet = unboundMethod.invoke(null);
+                Reflex.setFieldValue(registry, REGISTRY_ALL_TAGS_FIELD_FOLIA, unboundTagSet);
+            } catch (Exception e) {
+                this.plugin.error("Failed to unbound registry tags for Folia: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
+        } else {
+            // For Spigot: use reflection with obfuscated names
+            Class<?> tagSetClass = Reflex.getInnerClass(MappedRegistry.class.getName(), "a");  // TagSet for Spigot
+            if (tagSetClass == null) throw new IllegalStateException("TagSet class not found!");
+
+            Method unboundMethod = Reflex.getMethod(tagSetClass, TAG_SET_UNBOUND_METHOD);
+            Object unboundTagSet = Reflex.invokeMethod(unboundMethod, registry);
+
+            Reflex.setFieldValue(registry, REGISTRY_ALL_TAGS_FIELD_SPIGOT, unboundTagSet);
+        }
     }
 
     @Override
@@ -211,8 +313,18 @@ public class RegistryHack_1_21_7 implements RegistryHack {
             return null;
         }
 
-        HolderSet.Named<Item> supportedItems = getFrozenTags(ITEMS).get(customItemsTag(supportedId));
-        HolderSet.Named<Item> primaryItems = getFrozenTags(ITEMS).get(customItemsTag(primaryId));
+        HolderSet.Named<Item> supportedItems = this.getFrozenTags(ITEMS).get(customItemsTag(supportedId));
+        HolderSet.Named<Item> primaryItems = this.getFrozenTags(ITEMS).get(customItemsTag(primaryId));
+
+        // Debug null checks
+        if (supportedItems == null) {
+            this.plugin.error("Supported items is null for: " + supportedId);
+            return null;
+        }
+        if (primaryItems == null) {
+            this.plugin.error("Primary items is null for: " + primaryId);
+            return null;
+        }
 
         Component display = CraftChatMessage.fromJSON(NightMessage.asJson(customEnchantment.getDisplayName()));
         int weight = definition.getWeight();
@@ -222,8 +334,21 @@ public class RegistryHack_1_21_7 implements RegistryHack {
         int anvilCost = definition.getAnvilCost();
         EquipmentSlotGroup[] slots = nmsSlots(supportedSet);
 
+        if (minCost == null) {
+            this.plugin.error("MinCost is null for enchantment: " + customEnchantment.getId());
+            return null;
+        }
+        if (maxCost == null) {
+            this.plugin.error("MaxCost is null for enchantment: " + customEnchantment.getId());
+            return null;
+        }
+        if (slots == null) {
+            this.plugin.error("Slots is null for enchantment: " + customEnchantment.getId());
+            return null;
+        }
+
         Enchantment.EnchantmentDefinition nmsDefinition = Enchantment.definition(supportedItems, primaryItems, weight, maxLevel, minCost, maxCost, anvilCost, slots);
-        HolderSet<Enchantment> exclusiveSet = createExclusiveSet(customEnchantment);
+        HolderSet<Enchantment> exclusiveSet = this.createExclusiveSet(customEnchantment);
         DataComponentMap.Builder builder = DataComponentMap.builder();
 
         Enchantment enchantment = new Enchantment(display, nmsDefinition, exclusiveSet, builder.build());
@@ -322,33 +447,46 @@ public class RegistryHack_1_21_7 implements RegistryHack {
         registry.bindTag(tagKey, contents);
     }
 
-    private static void createItemsSet(@NotNull String id, @NotNull ItemSet category) {
+    private void createItemsSet(@NotNull String id, @NotNull ItemSet category) {
         TagKey<Item> tag = customItemsTag(id);
         List<Holder<Item>> holders = new ArrayList<>();
 
         category.getMaterials().forEach(material -> {
             ResourceLocation location = ResourceLocation.withDefaultNamespace(material);// CraftNamespacedKey.toMinecraft(material.getKey());
             Holder.Reference<Item> holder = ITEMS.get(location).orElse(null);
-            if (holder == null) return;
+            if (holder == null) {
+                System.out.println("[DEBUG] Could not find item holder for: " + material);
+                return;
+            }
 
             holders.add(holder);
         });
 
+        System.out.println("[DEBUG] Creating item set '" + id + "' with " + holders.size() + " items");
+        
         // Creates new tag, puts it in the 'frozenTags' map and binds holders to it.
         ITEMS.bindTag(tag, holders);
+        
+        // Verify the tag was created properly
+        HolderSet.Named<Item> retrievedTag = this.getFrozenTags(ITEMS).get(tag);
+        if (retrievedTag != null) {
+            System.out.println("[DEBUG] Item set '" + id + "' created successfully with " + retrievedTag.size() + " items");
+        } else {
+            System.out.println("[DEBUG] ERROR: Item set '" + id + "' could not be retrieved after creation!");
+        }
 
         //return getFrozenTags(ITEMS).get(customKey);
     }
 
     @NotNull
-    private static HolderSet.Named<Enchantment> createExclusiveSet(@NotNull CustomEnchantment customEnchantment) {
+    private HolderSet.Named<Enchantment> createExclusiveSet(@NotNull CustomEnchantment customEnchantment) {
         TagKey<Enchantment> customKey = customTagKey(ENCHANTS, "exclusive_set/" + customEnchantment.getId());
         List<Holder<Enchantment>> holders = new ArrayList<>();
 
         // Creates new tag, puts it in the 'frozenTags' map and binds holders to it.
         ENCHANTS.bindTag(customKey, holders);
 
-        return getFrozenTags(ENCHANTS).get(customKey);
+        return this.getFrozenTags(ENCHANTS).get(customKey);
     }
 
 

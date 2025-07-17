@@ -90,7 +90,9 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
             return;
         }
 
-        if (Version.isSpigot()) {
+        boolean needsRegistryHack = Version.isSpigot() || this.plugin.getFoliaLibWrapper().isFolia();
+        
+        if (needsRegistryHack) {
             this.plugin.getRegistryHack().unfreezeRegistry();
         }
 
@@ -106,7 +108,7 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
             this.loadEnchant(enchantId, data, provider);
         });
 
-        if (Version.isSpigot()) {
+        if (needsRegistryHack) {
             EnchantRegistry.getRegistered().forEach(enchantment -> {
                 this.plugin.getRegistryHack().addExclusives(enchantment);
             });
@@ -129,11 +131,14 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
         CustomEnchantment enchantment = provider.create(file, data);
 
         Enchantment bukkitEnchant;
-        if (Version.isSpigot()) {
+        boolean needsRegistryHack = Version.isSpigot() || this.plugin.getFoliaLibWrapper().isFolia();
+        
+        if (needsRegistryHack) {
+            // Spigot and Folia - use RegistryHack
             bukkitEnchant = this.plugin.getRegistryHack().registerEnchantment(enchantment);
         }
         else {
-            // Paper and Folia - use datapack system
+            // Paper only - use datapack system
             bukkitEnchant = RegistryType.ENCHANTMENT.getRegistry().get(EnchantKeys.custom(id));
         }
 

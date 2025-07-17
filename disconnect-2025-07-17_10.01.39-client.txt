@@ -1,0 +1,521 @@
+---- Minecraft Network Protocol Error Report ----
+// Are you sure you are not moving wrongly?
+
+Time: 2025-07-17 10:01:39
+Description: Registry Loading
+
+java.lang.IllegalStateException: Failed to load registries due to errors
+	at knot//net.minecraft.class_7655.method_62810(class_7655.java:280)
+	at knot//net.minecraft.class_7655.method_45126(class_7655.java:261)
+	at knot//net.minecraft.class_7655.method_45121(class_7655.java:228)
+	at knot//net.minecraft.class_7655.method_56519(class_7655.java:203)
+	at knot//net.minecraft.class_9173.method_62155(class_9173.java:95)
+	at knot//net.minecraft.class_9173.method_56585(class_9173.java:146)
+	at knot//net.minecraft.class_8674.method_57043(class_8674.java:127)
+	at knot//net.minecraft.class_8674.method_57044(class_8674.java:119)
+	at knot//net.minecraft.class_8674.method_52794(class_8674.java:127)
+	at knot//net.minecraft.class_8733.method_53041(class_8733.java:22)
+	at knot//net.minecraft.class_8733.method_65081(class_8733.java:8)
+	at knot//net.minecraft.class_2600.method_11072(class_2600.java:27)
+	at knot//net.minecraft.class_1255.method_18859(class_1255.java:164)
+	at knot//net.minecraft.class_4093.method_18859(class_4093.java:23)
+	at knot//net.minecraft.class_1255.method_16075(class_1255.java:138)
+	at knot//net.minecraft.class_1255.method_5383(class_1255.java:123)
+	at knot//net.minecraft.class_310.method_1523(class_310.java:1318)
+	at knot//net.minecraft.class_310.method_1514(class_310.java:947)
+	at knot//net.minecraft.client.main.Main.main(Main.java:265)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:480)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:74)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at com.modrinth.theseus.MinecraftLaunch.relaunch(MinecraftLaunch.java:87)
+	at com.modrinth.theseus.MinecraftLaunch.main(MinecraftLaunch.java:18)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at knot//net.minecraft.class_7655.method_62810(class_7655.java:280)
+	at knot//net.minecraft.class_7655.method_45126(class_7655.java:261)
+	at knot//net.minecraft.class_7655.method_45121(class_7655.java:228)
+Mixins in Stacktrace:
+	net.minecraft.class_7655:
+		net.fabricmc.fabric.mixin.registry.sync.RegistryLoaderMixin (fabric-registry-sync-v0.mixins.json)
+		net.fabricmc.fabric.mixin.resource.conditions.RegistryLoaderMixin (fabric-resource-conditions-api-v1.mixins.json)
+		net.fabricmc.fabric.mixin.item.RegistryLoaderMixin (fabric-item-api-v1.mixins.json)
+
+-- Loading info --
+Details:
+	Errors: 
+		minecraft:enchantment/excellentenchants:auto_reel: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Auto Reel"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/auto_reel",max_cost:{base:53,per_level_above_first:53},max_level:1,min_cost:{base:5,per_level_above_first:53},primary_items:"#excellentenchants:fishing_rod",slots:["mainhand","offhand"],supported_items:"#excellentenchants:fishing_rod",weight:1} from server
+		minecraft:enchantment/excellentenchants:bane_of_netherspawn: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Bane of Netherspawn"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/bane_of_netherspawn",max_cost:{base:7,per_level_above_first:11},max_level:5,min_cost:{base:1,per_level_above_first:11},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:blast_mining: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Blast Mining"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/blast_mining",max_cost:{base:7,per_level_above_first:11},max_level:5,min_cost:{base:1,per_level_above_first:11},primary_items:"#excellentenchants:pickaxe",slots:["mainhand"],supported_items:"#excellentenchants:pickaxe",weight:2} from server
+		minecraft:enchantment/excellentenchants:blindness: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["Blindness"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/blindness",max_cost:{base:5,per_level_above_first:28},max_level:2,min_cost:{base:1,per_level_above_first:28},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:bomber: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Bomber"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/bomber",max_cost:{base:10,per_level_above_first:19},max_level:3,min_cost:{base:3,per_level_above_first:19},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:1} from server
+		minecraft:enchantment/excellentenchants:cold_steel: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Cold Steel"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/cold_steel",max_cost:{base:7,per_level_above_first:19},max_level:3,min_cost:{base:1,per_level_above_first:19},primary_items:"#excellentenchants:chestplate",slots:["chest"],supported_items:"#excellentenchants:chestplate_elytra",weight:5} from server
+		minecraft:enchantment/excellentenchants:confusing_arrows: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Confusing Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/confusing_arrows",max_cost:{base:8,per_level_above_first:22},max_level:3,min_cost:{base:4,per_level_above_first:22},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:10} from server
+		minecraft:enchantment/excellentenchants:confusion: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Confusion"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/confusion",max_cost:{base:8,per_level_above_first:32},max_level:2,min_cost:{base:5,per_level_above_first:32},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:cure: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Cure"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/cure",max_cost:{base:7,per_level_above_first:17},max_level:3,min_cost:{base:1,per_level_above_first:17},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:curse_of_breaking: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Curse of Breaking"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/curse_of_breaking",max_cost:{base:6,per_level_above_first:18},max_level:3,min_cost:{base:1,per_level_above_first:18},primary_items:"#excellentenchants:breakable",slots:["mainhand","offhand","feet","legs","chest","head","body","saddle"],supported_items:"#excellentenchants:breakable",weight:10} from server
+		minecraft:enchantment/excellentenchants:curse_of_death: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Curse of Death"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/curse_of_death",max_cost:{base:11,per_level_above_first:22},max_level:3,min_cost:{base:5,per_level_above_first:22},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:2} from server
+		minecraft:enchantment/excellentenchants:curse_of_drowned: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Curse of Drowned"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/curse_of_drowned",max_cost:{base:11,per_level_above_first:20},max_level:3,min_cost:{base:4,per_level_above_first:20},primary_items:"#excellentenchants:fishing_rod",slots:["mainhand","offhand"],supported_items:"#excellentenchants:fishing_rod",weight:5} from server
+		minecraft:enchantment/excellentenchants:curse_of_fragility: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Curse of Fragility"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/curse_of_fragility",max_cost:{base:55,per_level_above_first:55},max_level:1,min_cost:{base:2,per_level_above_first:55},primary_items:"#excellentenchants:breakable",slots:["mainhand","offhand","feet","legs","chest","head","body","saddle"],supported_items:"#excellentenchants:breakable",weight:10} from server
+		minecraft:enchantment/excellentenchants:curse_of_mediocrity: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Curse of Mediocrity"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/curse_of_mediocrity",max_cost:{base:10,per_level_above_first:16},max_level:3,min_cost:{base:3,per_level_above_first:16},primary_items:"#excellentenchants:weapon",slots:["mainhand","offhand"],supported_items:"#excellentenchants:tools_weapons",weight:5} from server
+		minecraft:enchantment/excellentenchants:curse_of_misfortune: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Curse of Misfortune"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/curse_of_misfortune",max_cost:{base:4,per_level_above_first:19},max_level:3,min_cost:{base:1,per_level_above_first:19},primary_items:"#excellentenchants:tools_weapons",slots:["mainhand","offhand"],supported_items:"#excellentenchants:tools_weapons",weight:5} from server
+		minecraft:enchantment/excellentenchants:cutter: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Cutter"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/cutter",max_cost:{base:10,per_level_above_first:16},max_level:3,min_cost:{base:5,per_level_above_first:16},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:2} from server
+		minecraft:enchantment/excellentenchants:darkness_arrows: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Darkness Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/darkness_arrows",max_cost:{base:8,per_level_above_first:18},max_level:3,min_cost:{base:5,per_level_above_first:18},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:10} from server
+		minecraft:enchantment/excellentenchants:darkness_cloak: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Darkness Cloak"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/darkness_cloak",max_cost:{base:10,per_level_above_first:18},max_level:3,min_cost:{base:5,per_level_above_first:18},primary_items:"#excellentenchants:chestplate",slots:["chest"],supported_items:"#excellentenchants:chestplate_elytra",weight:5} from server
+		minecraft:enchantment/excellentenchants:decapitator: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Decapitator"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/decapitator",max_cost:{base:9,per_level_above_first:24},max_level:2,min_cost:{base:2,per_level_above_first:24},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:2} from server
+		minecraft:enchantment/excellentenchants:double_catch: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Double Catch"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/double_catch",max_cost:{base:6,per_level_above_first:19},max_level:3,min_cost:{base:3,per_level_above_first:19},primary_items:"#excellentenchants:fishing_rod",slots:["mainhand","offhand"],supported_items:"#excellentenchants:fishing_rod",weight:2} from server
+		minecraft:enchantment/excellentenchants:double_strike: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["Double Strike"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/double_strike",max_cost:{base:10,per_level_above_first:28},max_level:2,min_cost:{base:5,per_level_above_first:28},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:1} from server
+		minecraft:enchantment/excellentenchants:dragonfire_arrows: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Dragonfire Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/dragonfire_arrows",max_cost:{base:8,per_level_above_first:18},max_level:3,min_cost:{base:3,per_level_above_first:18},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:2} from server
+		minecraft:enchantment/excellentenchants:electrified_arrows: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["Electrified Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/electrified_arrows",max_cost:{base:8,per_level_above_first:21},max_level:3,min_cost:{base:3,per_level_above_first:21},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:5} from server
+		minecraft:enchantment/excellentenchants:elemental_protection: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Elemental Protection"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/elemental_protection",max_cost:{base:5,per_level_above_first:14},max_level:4,min_cost:{base:2,per_level_above_first:14},primary_items:"#excellentenchants:armor",slots:["head","chest","legs","feet"],supported_items:"#excellentenchants:armor",weight:10} from server
+		minecraft:enchantment/excellentenchants:ender_bow: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Ender Bow"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/ender_bow",max_cost:{base:50,per_level_above_first:50},max_level:1,min_cost:{base:5,per_level_above_first:50},primary_items:"#excellentenchants:bow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow",weight:1} from server
+		minecraft:enchantment/excellentenchants:exhaust: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Exhaust"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/exhaust",max_cost:{base:11,per_level_above_first:11},max_level:4,min_cost:{base:4,per_level_above_first:11},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:explosive_arrows: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Explosive Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/explosive_arrows",max_cost:{base:11,per_level_above_first:19},max_level:3,min_cost:{base:5,per_level_above_first:19},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:5} from server
+		minecraft:enchantment/excellentenchants:fire_shield: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Fire Shield"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/fire_shield",max_cost:{base:5,per_level_above_first:14},max_level:4,min_cost:{base:2,per_level_above_first:14},primary_items:"#excellentenchants:chestplate",slots:["chest"],supported_items:"#excellentenchants:chestplate_elytra",weight:2} from server
+		minecraft:enchantment/excellentenchants:flame_walker: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Flame Walker"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/flame_walker",max_cost:{base:12,per_level_above_first:29},max_level:2,min_cost:{base:5,per_level_above_first:29},primary_items:"#excellentenchants:boots",slots:["feet"],supported_items:"#excellentenchants:boots",weight:1} from server
+		minecraft:enchantment/excellentenchants:flare: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Flare"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/flare",max_cost:{base:50,per_level_above_first:50},max_level:1,min_cost:{base:3,per_level_above_first:50},primary_items:"#excellentenchants:bow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow",weight:5} from server
+		minecraft:enchantment/excellentenchants:ghast: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Ghast"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/ghast",max_cost:{base:63,per_level_above_first:63},max_level:1,min_cost:{base:2,per_level_above_first:63},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:1} from server
+		minecraft:enchantment/excellentenchants:glassbreaker: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Glass Breaker"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/glassbreaker",max_cost:{base:60,per_level_above_first:60},max_level:1,min_cost:{base:3,per_level_above_first:60},primary_items:"#excellentenchants:mining_tools",slots:["mainhand"],supported_items:"#excellentenchants:tool",weight:10} from server
+		minecraft:enchantment/excellentenchants:hardened: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Hardened"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/hardened",max_cost:{base:12,per_level_above_first:25},max_level:2,min_cost:{base:5,per_level_above_first:25},primary_items:"#excellentenchants:chestplate",slots:["chest"],supported_items:"#excellentenchants:chestplate_elytra",weight:5} from server
+		minecraft:enchantment/excellentenchants:haste: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Haste"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/haste",max_cost:{base:5,per_level_above_first:21},max_level:3,min_cost:{base:2,per_level_above_first:21},primary_items:"#excellentenchants:mining_tools",slots:["mainhand"],supported_items:"#excellentenchants:tool",weight:2} from server
+		minecraft:enchantment/excellentenchants:hover: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Hover"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/hover",max_cost:{base:6,per_level_above_first:22},max_level:3,min_cost:{base:2,per_level_above_first:22},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:10} from server
+		minecraft:enchantment/excellentenchants:ice_aspect: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Ice Aspect"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/ice_aspect",max_cost:{base:4,per_level_above_first:19},max_level:3,min_cost:{base:1,per_level_above_first:19},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:ice_shield: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Ice Shield"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/ice_shield",max_cost:{base:8,per_level_above_first:16},max_level:3,min_cost:{base:3,per_level_above_first:16},primary_items:"#excellentenchants:chestplate",slots:["chest"],supported_items:"#excellentenchants:chestplate_elytra",weight:10} from server
+		minecraft:enchantment/excellentenchants:infernus: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Infernus"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/infernus",max_cost:{base:5,per_level_above_first:18},max_level:3,min_cost:{base:1,per_level_above_first:18},primary_items:"#excellentenchants:trident",slots:["mainhand","offhand"],supported_items:"#excellentenchants:trident",weight:10} from server
+		minecraft:enchantment/excellentenchants:jumping: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Jumping"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/jumping",max_cost:{base:7,per_level_above_first:25},max_level:2,min_cost:{base:4,per_level_above_first:25},primary_items:"#excellentenchants:boots",slots:["feet"],supported_items:"#excellentenchants:boots",weight:2} from server
+		minecraft:enchantment/excellentenchants:kamikadze: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Kamikadze"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/kamikadze",max_cost:{base:9,per_level_above_first:21},max_level:3,min_cost:{base:2,per_level_above_first:21},primary_items:"#excellentenchants:chestplate",slots:["chest"],supported_items:"#excellentenchants:chestplate_elytra",weight:5} from server
+		minecraft:enchantment/excellentenchants:lingering: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["Lingering"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/lingering",max_cost:{base:7,per_level_above_first:17},max_level:3,min_cost:{base:2,per_level_above_first:17},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:2} from server
+		minecraft:enchantment/excellentenchants:lucky_miner: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Lucky Miner"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/lucky_miner",max_cost:{base:9,per_level_above_first:18},max_level:3,min_cost:{base:4,per_level_above_first:18},primary_items:"#excellentenchants:pickaxe",slots:["mainhand"],supported_items:"#excellentenchants:pickaxe",weight:5} from server
+		minecraft:enchantment/excellentenchants:night_vision: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Night Vision"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/night_vision",max_cost:{base:59,per_level_above_first:59},max_level:1,min_cost:{base:1,per_level_above_first:59},primary_items:"#excellentenchants:helmet",slots:["head"],supported_items:"#excellentenchants:helmet",weight:1} from server
+		minecraft:enchantment/excellentenchants:nimble: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Nimble"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/nimble",max_cost:{base:56,per_level_above_first:56},max_level:1,min_cost:{base:1,per_level_above_first:56},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:2} from server
+		minecraft:enchantment/excellentenchants:paralyze: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Paralyze"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/paralyze",max_cost:{base:10,per_level_above_first:11},max_level:5,min_cost:{base:3,per_level_above_first:11},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:5} from server
+		minecraft:enchantment/excellentenchants:poisoned_arrows: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Poisoned Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/poisoned_arrows",max_cost:{base:8,per_level_above_first:21},max_level:3,min_cost:{base:5,per_level_above_first:21},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:5} from server
+		minecraft:enchantment/excellentenchants:rage: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Rage"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/rage",max_cost:{base:9,per_level_above_first:28},max_level:2,min_cost:{base:5,per_level_above_first:28},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:5} from server
+		minecraft:enchantment/excellentenchants:rebound: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Rebound"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/rebound",max_cost:{base:53,per_level_above_first:53},max_level:1,min_cost:{base:5,per_level_above_first:53},primary_items:"#excellentenchants:boots",slots:["feet"],supported_items:"#excellentenchants:boots",weight:2} from server
+		minecraft:enchantment/excellentenchants:regrowth: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Regrowth"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/regrowth",max_cost:{base:5,per_level_above_first:15},max_level:4,min_cost:{base:1,per_level_above_first:15},primary_items:"#excellentenchants:chestplate",slots:["chest"],supported_items:"#excellentenchants:chestplate_elytra",weight:2} from server
+		minecraft:enchantment/excellentenchants:replanter: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["Replanter"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/replanter",max_cost:{base:56,per_level_above_first:56},max_level:1,min_cost:{base:1,per_level_above_first:56},primary_items:"#excellentenchants:hoe",slots:["mainhand"],supported_items:"#excellentenchants:hoe",weight:1} from server
+		minecraft:enchantment/excellentenchants:restore: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Restore"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/restore",max_cost:{base:7,per_level_above_first:18},max_level:3,min_cost:{base:1,per_level_above_first:18},primary_items:"#excellentenchants:breakable",slots:["mainhand","offhand","feet","legs","chest","head","body","saddle"],supported_items:"#excellentenchants:breakable",weight:2} from server
+		minecraft:enchantment/excellentenchants:river_master: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["River Master"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/river_master",max_cost:{base:7,per_level_above_first:13},max_level:5,min_cost:{base:2,per_level_above_first:13},primary_items:"#excellentenchants:fishing_rod",slots:["mainhand","offhand"],supported_items:"#excellentenchants:fishing_rod",weight:10} from server
+		minecraft:enchantment/excellentenchants:rocket: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Rocket"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/rocket",max_cost:{base:9,per_level_above_first:22},max_level:3,min_cost:{base:5,per_level_above_first:22},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:5} from server
+		minecraft:enchantment/excellentenchants:saturation: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Saturation"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/saturation",max_cost:{base:11,per_level_above_first:33},max_level:2,min_cost:{base:5,per_level_above_first:33},primary_items:"#excellentenchants:helmet",slots:["head"],supported_items:"#excellentenchants:helmet",weight:2} from server
+		minecraft:enchantment/excellentenchants:seasoned_angler: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Seasoned Angler"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/seasoned_angler",max_cost:{base:9,per_level_above_first:15},max_level:3,min_cost:{base:3,per_level_above_first:15},primary_items:"#excellentenchants:fishing_rod",slots:["mainhand","offhand"],supported_items:"#excellentenchants:fishing_rod",weight:5} from server
+		minecraft:enchantment/excellentenchants:silk_chest: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Silk Chest"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/silk_chest",max_cost:{base:65,per_level_above_first:65},max_level:1,min_cost:{base:3,per_level_above_first:65},primary_items:"#excellentenchants:axe",slots:["mainhand"],supported_items:"#excellentenchants:mining_tools",weight:1} from server
+		minecraft:enchantment/excellentenchants:silk_spawner: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Silk Spawner"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/silk_spawner",max_cost:{base:60,per_level_above_first:60},max_level:1,min_cost:{base:4,per_level_above_first:60},primary_items:"#excellentenchants:pickaxe",slots:["mainhand"],supported_items:"#excellentenchants:mining_tools",weight:1} from server
+		minecraft:enchantment/excellentenchants:smelter: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Smelter"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/smelter",max_cost:{base:9,per_level_above_first:12},max_level:5,min_cost:{base:3,per_level_above_first:12},primary_items:"#excellentenchants:mining_tools",slots:["mainhand"],supported_items:"#excellentenchants:tool",weight:5} from server
+		minecraft:enchantment/excellentenchants:sniper: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Sniper"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/sniper",max_cost:{base:6,per_level_above_first:29},max_level:2,min_cost:{base:3,per_level_above_first:29},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:10} from server
+		minecraft:enchantment/excellentenchants:soulbound: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Soulbound"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/soulbound",max_cost:{base:57,per_level_above_first:57},max_level:1,min_cost:{base:4,per_level_above_first:57},primary_items:"#excellentenchants:breakable",slots:["mainhand","offhand","feet","legs","chest","head","body","saddle"],supported_items:"#excellentenchants:breakable",weight:2} from server
+		minecraft:enchantment/excellentenchants:speed: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Speed"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/speed",max_cost:{base:9,per_level_above_first:28},max_level:2,min_cost:{base:3,per_level_above_first:28},primary_items:"#excellentenchants:boots",slots:["feet"],supported_items:"#excellentenchants:boots",weight:2} from server
+		minecraft:enchantment/excellentenchants:stopping_force: Failed to parse value {anvil_cost:3,description:{bold:0b,extra:["Stopping Force"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/stopping_force",max_cost:{base:11,per_level_above_first:17},max_level:3,min_cost:{base:4,per_level_above_first:17},primary_items:"#excellentenchants:leggings",slots:["legs"],supported_items:"#excellentenchants:leggings",weight:5} from server
+		minecraft:enchantment/excellentenchants:survivalist: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Survivalist"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/survivalist",max_cost:{base:55,per_level_above_first:55},max_level:1,min_cost:{base:4,per_level_above_first:55},primary_items:"#excellentenchants:fishing_rod",slots:["mainhand","offhand"],supported_items:"#excellentenchants:fishing_rod",weight:2} from server
+		minecraft:enchantment/excellentenchants:swiper: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Swiper"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/swiper",max_cost:{base:10,per_level_above_first:19},max_level:3,min_cost:{base:4,per_level_above_first:19},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:2} from server
+		minecraft:enchantment/excellentenchants:telekinesis: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["Telekinesis"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/telekinesis",max_cost:{base:50,per_level_above_first:50},max_level:1,min_cost:{base:2,per_level_above_first:50},primary_items:"#excellentenchants:mining_tools",slots:["mainhand"],supported_items:"#excellentenchants:tool",weight:1} from server
+		minecraft:enchantment/excellentenchants:temper: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Temper"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/temper",max_cost:{base:12,per_level_above_first:9},max_level:5,min_cost:{base:5,per_level_above_first:9},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:1} from server
+		minecraft:enchantment/excellentenchants:thrifty: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Thrifty"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/thrifty",max_cost:{base:10,per_level_above_first:19},max_level:3,min_cost:{base:3,per_level_above_first:19},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:2} from server
+		minecraft:enchantment/excellentenchants:thunder: Failed to parse value {anvil_cost:4,description:{bold:0b,extra:["Thunder"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/thunder",max_cost:{base:7,per_level_above_first:9},max_level:5,min_cost:{base:1,per_level_above_first:9},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:5} from server
+		minecraft:enchantment/excellentenchants:treefeller: Failed to parse value {anvil_cost:6,description:{bold:0b,extra:["Treefeller"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/treefeller",max_cost:{base:58,per_level_above_first:58},max_level:1,min_cost:{base:1,per_level_above_first:58},primary_items:"#excellentenchants:axe",slots:["mainhand"],supported_items:"#excellentenchants:axe",weight:2} from server
+		minecraft:enchantment/excellentenchants:tunnel: Failed to parse value {anvil_cost:5,description:{bold:0b,extra:["Tunnel"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/tunnel",max_cost:{base:9,per_level_above_first:20},max_level:3,min_cost:{base:2,per_level_above_first:20},primary_items:"#excellentenchants:pickaxe",slots:["mainhand"],supported_items:"#excellentenchants:mining_tools",weight:1} from server
+		minecraft:enchantment/excellentenchants:vampire: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Vampire"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/vampire",max_cost:{base:8,per_level_above_first:16},max_level:3,min_cost:{base:1,per_level_above_first:16},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:2} from server
+		minecraft:enchantment/excellentenchants:vampiric_arrows: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Vampiric Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/vampiric_arrows",max_cost:{base:8,per_level_above_first:16},max_level:3,min_cost:{base:3,per_level_above_first:16},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:2} from server
+		minecraft:enchantment/excellentenchants:veinminer: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Veinminer"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/veinminer",max_cost:{base:6,per_level_above_first:21},max_level:3,min_cost:{base:3,per_level_above_first:21},primary_items:"#excellentenchants:pickaxe",slots:["mainhand"],supported_items:"#excellentenchants:pickaxe",weight:2} from server
+		minecraft:enchantment/excellentenchants:venom: Failed to parse value {anvil_cost:2,description:{bold:0b,extra:["Venom"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/venom",max_cost:{base:5,per_level_above_first:25},max_level:2,min_cost:{base:2,per_level_above_first:25},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:village_defender: Failed to parse value {anvil_cost:1,description:{bold:0b,extra:["Village Defender"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/village_defender",max_cost:{base:6,per_level_above_first:12},max_level:5,min_cost:{base:2,per_level_above_first:12},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:10} from server
+		minecraft:enchantment/excellentenchants:water_breathing: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Water Breathing"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/water_breathing",max_cost:{base:52,per_level_above_first:52},max_level:1,min_cost:{base:3,per_level_above_first:52},primary_items:"#excellentenchants:helmet",slots:["head"],supported_items:"#excellentenchants:helmet",weight:1} from server
+		minecraft:enchantment/excellentenchants:wisdom: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Wisdom"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/wisdom",max_cost:{base:9,per_level_above_first:13},max_level:5,min_cost:{base:4,per_level_above_first:13},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:5} from server
+		minecraft:enchantment/excellentenchants:wither: Failed to parse value {anvil_cost:8,description:{bold:0b,extra:["Wither"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/wither",max_cost:{base:9,per_level_above_first:29},max_level:2,min_cost:{base:5,per_level_above_first:29},primary_items:"#excellentenchants:sword",slots:["mainhand"],supported_items:"#excellentenchants:swords_axes",weight:5} from server
+		minecraft:enchantment/excellentenchants:withered_arrows: Failed to parse value {anvil_cost:7,description:{bold:0b,extra:["Withered Arrows"],italic:0b,obfuscated:0b,strikethrough:0b,text:"",underlined:0b},exclusive_set:"#excellentenchants:exclusive_set/withered_arrows",max_cost:{base:8,per_level_above_first:17},max_level:3,min_cost:{base:2,per_level_above_first:17},primary_items:"#excellentenchants:bow_crossbow",slots:["mainhand","offhand"],supported_items:"#excellentenchants:bow_crossbow",weight:5} from server
+Stacktrace:
+	at knot//net.minecraft.class_7655.method_62810(class_7655.java:280)
+	at knot//net.minecraft.class_7655.method_45126(class_7655.java:261)
+	at knot//net.minecraft.class_7655.method_45121(class_7655.java:228)
+	at knot//net.minecraft.class_7655.method_56519(class_7655.java:203)
+	at knot//net.minecraft.class_9173.method_62155(class_9173.java:95)
+	at knot//net.minecraft.class_9173.method_56585(class_9173.java:146)
+	at knot//net.minecraft.class_8674.method_57043(class_8674.java:127)
+	at knot//net.minecraft.class_8674.method_57044(class_8674.java:119)
+	at knot//net.minecraft.class_8674.method_52794(class_8674.java:127)
+	at knot//net.minecraft.class_8733.method_53041(class_8733.java:22)
+	at knot//net.minecraft.class_8733.method_65081(class_8733.java:8)
+	at knot//net.minecraft.class_2600.method_11072(class_2600.java:27)
+	at knot//net.minecraft.class_1255.method_18859(class_1255.java:164)
+	at knot//net.minecraft.class_4093.method_18859(class_4093.java:23)
+	at knot//net.minecraft.class_1255.method_16075(class_1255.java:138)
+	at knot//net.minecraft.class_1255.method_5383(class_1255.java:123)
+	at knot//net.minecraft.class_310.method_1523(class_310.java:1318)
+	at knot//net.minecraft.class_310.method_1514(class_310.java:947)
+	at knot//net.minecraft.client.main.Main.main(Main.java:265)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:480)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:74)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at com.modrinth.theseus.MinecraftLaunch.relaunch(MinecraftLaunch.java:87)
+	at com.modrinth.theseus.MinecraftLaunch.main(MinecraftLaunch.java:18)
+Mixins in Stacktrace:
+	net.minecraft.class_7655:
+		net.fabricmc.fabric.mixin.registry.sync.RegistryLoaderMixin (fabric-registry-sync-v0.mixins.json)
+		net.fabricmc.fabric.mixin.resource.conditions.RegistryLoaderMixin (fabric-resource-conditions-api-v1.mixins.json)
+		net.fabricmc.fabric.mixin.item.RegistryLoaderMixin (fabric-item-api-v1.mixins.json)
+	net.minecraft.class_9173:
+		net.fabricmc.fabric.mixin.registry.sync.client.ClientRegistriesMixin (fabric-registry-sync-v0.client.mixins.json)
+	net.minecraft.class_8674:
+		net.fabricmc.fabric.mixin.networking.client.ClientConfigurationNetworkHandlerMixin (fabric-networking-api-v1.client.mixins.json)
+		net.fabricmc.fabric.mixin.event.lifecycle.client.ClientConfigurationNetworkHandlerMixin (fabric-lifecycle-events-v1.client.mixins.json)
+		net.fabricmc.fabric.mixin.networking.client.accessor.ClientConfigurationNetworkHandlerAccessor (fabric-networking-api-v1.client.mixins.json)
+	net.minecraft.class_1255:
+		dynamic_fps.impl.mixin.bugfix.BlockableEventLoopMixin (dynamic_fps-common.mixins.json)
+	net.minecraft.class_310:
+		dev.isxander.zoomify.mixins.hooks.MinecraftClientMixin (zoomify.mixins.json)
+		me.contaria.fastquit.mixin.MinecraftClientAccessor (fastquit.mixins.json)
+		org.redlance.dima_dencep.mods.rrls.mixins.MinecraftClientMixin (rrls.mixins.json)
+		traben.entity_texture_features.mixin.reloading.MixinMinecraftClient (entity_texture_features-common.mixins.json)
+		traben.entity_model_features.mixin.accessor.MinecraftClientAccessor (entity_model_features-common.mixins.json)
+		net.raphimc.immediatelyfast.injection.mixins.core.MixinMinecraftClient (immediatelyfast-common.mixins.json)
+		com.aizistral.nochatreports.fabric.mixins.client.MixinMinecraft (mixins/fabric/nochatreports-fabric.mixins.json)
+		com.aizistral.nochatreports.common.mixins.client.MixinMinecraft (mixins/common/nochatreports.mixins.json)
+		dynamic_fps.impl.mixin.MinecraftMixin (dynamic_fps-common.mixins.json)
+		dev.isxander.controlify.mixins.core.MinecraftMixin (controlify.mixins.json)
+		net.fabricmc.fabric.mixin.screen.MinecraftClientMixin (fabric-screen-api-v1.mixins.json)
+		net.fabricmc.fabric.mixin.event.interaction.client.MinecraftClientMixin (fabric-events-interaction-v0.client.mixins.json)
+		dev.isxander.yacl3.mixin.MinecraftMixin (yacl.mixins.json)
+		dev.isxander.controlify.mixins.feature.virtualmouse.MinecraftMixin (controlify.mixins.json)
+		de.dafuqs.paginatedadvancements.mixin.MinecraftClientMixin (paginatedadvancements.mixins.json)
+		ca.fxco.moreculling.mixin.blockstates.Minecraft_loadBlocksMixin (moreculling.mixins.json)
+		net.caffeinemc.mods.sodium.mixin.core.MinecraftMixin (sodium-common.mixins.json)
+		dev.lambdaurora.spruceui.mixin.MinecraftClientMixin (spruceui.mixins.json)
+		net.fabricmc.fabric.mixin.datagen.client.MinecraftClientMixin (fabric-data-generation-api-v1.client.mixins.json)
+		me.flashyreese.mods.sodiumextra.mixin.core.MixinMinecraftClient (sodium-extra.mixins.json)
+		dev.isxander.controlify.mixins.feature.input.MinecraftMixin (controlify.mixins.json)
+		traben.entity_model_features.mixin.MixinResourceReloadEnd (entity_model_features-common.mixins.json)
+		opekope2.optigui.mixin.MinecraftClientMixin (optigui.mixins.json)
+		net.irisshaders.iris.mixin.MixinMinecraft_Images (mixins.iris.json)
+		traben.entity_texture_features.mixin.reloading.MixinResourceReload (entity_texture_features-common.mixins.json)
+		net.irisshaders.iris.mixin.MixinOptions_Entrypoint (mixins.iris.json)
+		dev.isxander.controlify.mixins.feature.screenop.MinecraftMixin (controlify.mixins.json)
+		net.fabricmc.fabric.mixin.registry.sync.client.MinecraftClientMixin (fabric-registry-sync-v0.client.mixins.json)
+		net.irisshaders.iris.mixin.MixinMinecraft_PipelineManagement (mixins.iris.json)
+		me.contaria.fastquit.mixin.MinecraftClientMixin (fastquit.mixins.json)
+		me.ramidzkh.fabrishot.mixins.MinecraftClientMixin (mixins.fabrishot.json)
+		traben.entity_model_features.mixin.MixinResourceReloadStart (entity_model_features-common.mixins.json)
+		net.irisshaders.iris.mixin.MixinMinecraft_Keybinds (mixins.iris.json)
+		dev.isxander.controlify.mixins.feature.bind.MinecraftMixin (controlify.mixins.json)
+		dev.lambdaurora.lambdynlights.mixin.MinecraftClientMixin (lambdynlights.mixins.json)
+		net.fabricmc.fabric.mixin.networking.client.accessor.MinecraftClientAccessor (fabric-networking-api-v1.client.mixins.json)
+		ca.fxco.moreculling.mixin.Minecraft_registerReloadListenersMixin (moreculling.fabric.mixins.json)
+		dev.isxander.controlify.mixins.feature.rumble.MinecraftMixin (controlify.mixins.json)
+		net.fabricmc.fabric.mixin.event.lifecycle.client.MinecraftClientMixin (fabric-lifecycle-events-v1.client.mixins.json)
+		me.flashyreese.mods.sodiumextra.mixin.gui.MinecraftClientAccessor (sodium-extra.mixins.json)
+		ca.fxco.moreculling.mixin.Minecraft_managersMixin (moreculling.mixins.json)
+	net.minecraft.client.main.Main:
+		dev.kir.cubeswithoutborders.client.mixin.MainMixin (cubes-without-borders.mixins.json)
+
+-- Received Elements and Tags --
+Details:
+	Dynamic Registries: 
+		minecraft:banner_pattern: elements=43 tags=11
+		minecraft:cat_variant: elements=11 tags=0
+		minecraft:chat_type: elements=8 tags=0
+		minecraft:chicken_variant: elements=3 tags=0
+		minecraft:cow_variant: elements=3 tags=0
+		minecraft:damage_type: elements=49 tags=33
+		minecraft:dialog: elements=3 tags=2
+		minecraft:dimension_type: elements=4 tags=0
+		minecraft:enchantment: elements=121 tags=101
+		minecraft:frog_variant: elements=3 tags=0
+		minecraft:instrument: elements=8 tags=3
+		minecraft:jukebox_song: elements=21 tags=0
+		minecraft:painting_variant: elements=51 tags=1
+		minecraft:pig_variant: elements=3 tags=0
+		minecraft:test_environment: elements=1 tags=0
+		minecraft:test_instance: elements=1 tags=0
+		minecraft:trim_material: elements=11 tags=0
+		minecraft:trim_pattern: elements=18 tags=0
+		minecraft:wolf_sound_variant: elements=7 tags=0
+		minecraft:wolf_variant: elements=9 tags=0
+		minecraft:worldgen/biome: elements=65 tags=72
+	Static Registries: 
+		minecraft:block: tags=194
+		minecraft:entity_type: tags=39
+		minecraft:fluid: tags=2
+		minecraft:game_event: tags=5
+		minecraft:item: tags=179
+		minecraft:point_of_interest_type: tags=3
+Stacktrace:
+	at knot//net.minecraft.class_9173.method_64903(class_9173.java:112)
+	at knot//net.minecraft.class_9173.method_62155(class_9173.java:98)
+	at knot//net.minecraft.class_9173.method_56585(class_9173.java:146)
+	at knot//net.minecraft.class_8674.method_57043(class_8674.java:127)
+	at knot//net.minecraft.class_8674.method_57044(class_8674.java:119)
+	at knot//net.minecraft.class_8674.method_52794(class_8674.java:127)
+	at knot//net.minecraft.class_8733.method_53041(class_8733.java:22)
+	at knot//net.minecraft.class_8733.method_65081(class_8733.java:8)
+	at knot//net.minecraft.class_2600.method_11072(class_2600.java:27)
+	at knot//net.minecraft.class_1255.method_18859(class_1255.java:164)
+	at knot//net.minecraft.class_4093.method_18859(class_4093.java:23)
+	at knot//net.minecraft.class_1255.method_16075(class_1255.java:138)
+	at knot//net.minecraft.class_1255.method_5383(class_1255.java:123)
+	at knot//net.minecraft.class_310.method_1523(class_310.java:1318)
+	at knot//net.minecraft.class_310.method_1514(class_310.java:947)
+	at knot//net.minecraft.client.main.Main.main(Main.java:265)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:480)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:74)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+	at com.modrinth.theseus.MinecraftLaunch.relaunch(MinecraftLaunch.java:87)
+	at com.modrinth.theseus.MinecraftLaunch.main(MinecraftLaunch.java:18)
+Mixins in Stacktrace:
+	net.minecraft.class_9173:
+		net.fabricmc.fabric.mixin.registry.sync.client.ClientRegistriesMixin (fabric-registry-sync-v0.client.mixins.json)
+	net.minecraft.class_8674:
+		net.fabricmc.fabric.mixin.networking.client.ClientConfigurationNetworkHandlerMixin (fabric-networking-api-v1.client.mixins.json)
+		net.fabricmc.fabric.mixin.event.lifecycle.client.ClientConfigurationNetworkHandlerMixin (fabric-lifecycle-events-v1.client.mixins.json)
+		net.fabricmc.fabric.mixin.networking.client.accessor.ClientConfigurationNetworkHandlerAccessor (fabric-networking-api-v1.client.mixins.json)
+	net.minecraft.class_1255:
+		dynamic_fps.impl.mixin.bugfix.BlockableEventLoopMixin (dynamic_fps-common.mixins.json)
+	net.minecraft.class_310:
+		dev.isxander.zoomify.mixins.hooks.MinecraftClientMixin (zoomify.mixins.json)
+		me.contaria.fastquit.mixin.MinecraftClientAccessor (fastquit.mixins.json)
+		org.redlance.dima_dencep.mods.rrls.mixins.MinecraftClientMixin (rrls.mixins.json)
+		traben.entity_texture_features.mixin.reloading.MixinMinecraftClient (entity_texture_features-common.mixins.json)
+		traben.entity_model_features.mixin.accessor.MinecraftClientAccessor (entity_model_features-common.mixins.json)
+		net.raphimc.immediatelyfast.injection.mixins.core.MixinMinecraftClient (immediatelyfast-common.mixins.json)
+		com.aizistral.nochatreports.fabric.mixins.client.MixinMinecraft (mixins/fabric/nochatreports-fabric.mixins.json)
+		com.aizistral.nochatreports.common.mixins.client.MixinMinecraft (mixins/common/nochatreports.mixins.json)
+		dynamic_fps.impl.mixin.MinecraftMixin (dynamic_fps-common.mixins.json)
+		dev.isxander.controlify.mixins.core.MinecraftMixin (controlify.mixins.json)
+		net.fabricmc.fabric.mixin.screen.MinecraftClientMixin (fabric-screen-api-v1.mixins.json)
+		net.fabricmc.fabric.mixin.event.interaction.client.MinecraftClientMixin (fabric-events-interaction-v0.client.mixins.json)
+		dev.isxander.yacl3.mixin.MinecraftMixin (yacl.mixins.json)
+		dev.isxander.controlify.mixins.feature.virtualmouse.MinecraftMixin (controlify.mixins.json)
+		de.dafuqs.paginatedadvancements.mixin.MinecraftClientMixin (paginatedadvancements.mixins.json)
+		ca.fxco.moreculling.mixin.blockstates.Minecraft_loadBlocksMixin (moreculling.mixins.json)
+		net.caffeinemc.mods.sodium.mixin.core.MinecraftMixin (sodium-common.mixins.json)
+		dev.lambdaurora.spruceui.mixin.MinecraftClientMixin (spruceui.mixins.json)
+		net.fabricmc.fabric.mixin.datagen.client.MinecraftClientMixin (fabric-data-generation-api-v1.client.mixins.json)
+		me.flashyreese.mods.sodiumextra.mixin.core.MixinMinecraftClient (sodium-extra.mixins.json)
+		dev.isxander.controlify.mixins.feature.input.MinecraftMixin (controlify.mixins.json)
+		traben.entity_model_features.mixin.MixinResourceReloadEnd (entity_model_features-common.mixins.json)
+		opekope2.optigui.mixin.MinecraftClientMixin (optigui.mixins.json)
+		net.irisshaders.iris.mixin.MixinMinecraft_Images (mixins.iris.json)
+		traben.entity_texture_features.mixin.reloading.MixinResourceReload (entity_texture_features-common.mixins.json)
+		net.irisshaders.iris.mixin.MixinOptions_Entrypoint (mixins.iris.json)
+		dev.isxander.controlify.mixins.feature.screenop.MinecraftMixin (controlify.mixins.json)
+		net.fabricmc.fabric.mixin.registry.sync.client.MinecraftClientMixin (fabric-registry-sync-v0.client.mixins.json)
+		net.irisshaders.iris.mixin.MixinMinecraft_PipelineManagement (mixins.iris.json)
+		me.contaria.fastquit.mixin.MinecraftClientMixin (fastquit.mixins.json)
+		me.ramidzkh.fabrishot.mixins.MinecraftClientMixin (mixins.fabrishot.json)
+		traben.entity_model_features.mixin.MixinResourceReloadStart (entity_model_features-common.mixins.json)
+		net.irisshaders.iris.mixin.MixinMinecraft_Keybinds (mixins.iris.json)
+		dev.isxander.controlify.mixins.feature.bind.MinecraftMixin (controlify.mixins.json)
+		dev.lambdaurora.lambdynlights.mixin.MinecraftClientMixin (lambdynlights.mixins.json)
+		net.fabricmc.fabric.mixin.networking.client.accessor.MinecraftClientAccessor (fabric-networking-api-v1.client.mixins.json)
+		ca.fxco.moreculling.mixin.Minecraft_registerReloadListenersMixin (moreculling.fabric.mixins.json)
+		dev.isxander.controlify.mixins.feature.rumble.MinecraftMixin (controlify.mixins.json)
+		net.fabricmc.fabric.mixin.event.lifecycle.client.MinecraftClientMixin (fabric-lifecycle-events-v1.client.mixins.json)
+		me.flashyreese.mods.sodiumextra.mixin.gui.MinecraftClientAccessor (sodium-extra.mixins.json)
+		ca.fxco.moreculling.mixin.Minecraft_managersMixin (moreculling.mixins.json)
+	net.minecraft.client.main.Main:
+		dev.kir.cubeswithoutborders.client.mixin.MainMixin (cubes-without-borders.mixins.json)
+
+-- Incoming Packet --
+Details:
+	Type: clientbound/minecraft:finish_configuration
+	Is Terminal: true
+	Is Skippable: false
+
+-- Connection --
+Details:
+	Protocol: configuration
+	Flow: CLIENTBOUND
+	Is Local: false
+	Server type: OTHER
+	Server brand: §3Plugin§7-§3Hide§7-§6Pro§r (Velocity)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.21.7
+	Minecraft Version ID: 1.21.7
+	Operating System: Windows 11 (amd64) version 10.0
+	Java Version: 21.0.3, Azul Systems, Inc.
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Azul Systems, Inc.
+	Memory: 0 bytes (0 MiB) / 2990538752 bytes (2852 MiB) up to 12549357568 bytes (11968 MiB)
+	CPUs: 32
+	Processor Vendor: GenuineIntel
+	Processor Name: 13th Gen Intel(R) Core(TM) i9-13980HX
+	Identifier: Intel64 Family 6 Model 183 Stepping 1
+	Microarchitecture: Raptor Lake
+	Frequency (GHz): 2.42
+	Number of physical packages: 1
+	Number of physical CPUs: 24
+	Number of logical CPUs: 32
+	Graphics card #0 name: Intel(R) UHD Graphics
+	Graphics card #0 vendor: Intel Corporation
+	Graphics card #0 VRAM (MiB): 1024.00
+	Graphics card #0 deviceId: VideoController1
+	Graphics card #0 versionInfo: 31.0.101.4502
+	Graphics card #1 name: NVIDIA GeForce RTX 4070 Laptop GPU
+	Graphics card #1 vendor: NVIDIA
+	Graphics card #1 VRAM (MiB): 8188.00
+	Graphics card #1 deviceId: VideoController2
+	Graphics card #1 versionInfo: 32.0.15.7688
+	Memory slot #0 capacity (MiB): 16384.00
+	Memory slot #0 clockSpeed (GHz): 4.80
+	Memory slot #0 type: DDR5
+	Memory slot #1 capacity (MiB): 16384.00
+	Memory slot #1 clockSpeed (GHz): 4.80
+	Memory slot #1 type: DDR5
+	Virtual memory max (MiB): 64130.57
+	Virtual memory used (MiB): 36482.35
+	Swap memory total (MiB): 31744.00
+	Swap memory used (MiB): 889.79
+	Space in storage for jna.tmpdir (MiB): available: 187625.03, total: 952859.00
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): available: 187625.03, total: 952859.00
+	Space in storage for io.netty.native.workdir (MiB): available: 187625.03, total: 952859.00
+	Space in storage for java.io.tmpdir (MiB): available: 187625.03, total: 952859.00
+	Space in storage for workdir (MiB): available: 187625.03, total: 952859.00
+	JVM Flags: 4 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xmx11968M -XX:+UnlockExperimentalVMOptions -XX:+UseZGC
+	Fabric Mods: 
+		animatica: Animatica 0.6.1+1.21.5
+		bettergrass: BetterGrassify 1.7.0+fabric.1.21.6
+			blue_endless_jankson: jankson 1.2.3
+		bettermounthud: Better Mount HUD 1.2.6
+		capes: Capes 1.5.5+1.21.5
+		cloth-config: Cloth Config v19 19.0.147
+			cloth-basic-math: cloth-basic-math 0.6.1
+		controlify: Controlify 2.2.1+1.21.6-fabric
+			dev_isxander_libsdl4j: libsdl4j 3.2.16.release-3.2.16-75
+			dev_isxander_steamdeck4j: steamdeck4j 1.1.7
+			mixinextras: MixinExtras 0.5.0-beta.4
+			org_hid4java_hid4java: hid4java 0.8.0
+		cubes-without-borders: Cubes Without Borders 3.0.0+mc1.21.5
+		debugify: Debugify 1.21.7+1.0
+		dynamic_fps: Dynamic FPS 3.9.6
+			net_lostluma_battery: battery 1.3.0
+		e4mc_minecraft: e4mc 5.4.1
+			folk_sisby_kaleido-config: kaleido-config 0.3.1+1.3.1
+		entity_model_features: Entity Model Features 2.4.4
+		entity_texture_features: Entity Texture Features 6.2.14
+			org_apache_httpcomponents_httpmime: httpmime 4.5.10
+		entityculling: EntityCulling 1.8.1
+			transition: TRansition 1.0.3
+			trender: TRender 1.0.5
+		fabric-api: Fabric API 0.128.2+1.21.7
+			fabric-api-base: Fabric API Base 0.4.64+9ec45cd86c
+			fabric-api-lookup-api-v1: Fabric API Lookup API (v1) 1.6.100+946bf4c36c
+			fabric-biome-api-v1: Fabric Biome API (v1) 16.0.11+946bf4c36c
+			fabric-block-api-v1: Fabric Block API (v1) 1.1.3+946bf4c36c
+			fabric-block-view-api-v2: Fabric BlockView API (v2) 1.0.31+946bf4c36c
+			fabric-command-api-v2: Fabric Command API (v2) 2.2.53+946bf4c36c
+			fabric-content-registries-v0: Fabric Content Registries (v0) 10.0.18+946bf4c36c
+			fabric-convention-tags-v1: Fabric Convention Tags 2.1.39+7f945d5b6c
+			fabric-convention-tags-v2: Fabric Convention Tags (v2) 2.15.4+311075966c
+			fabric-crash-report-info-v1: Fabric Crash Report Info (v1) 0.3.15+946bf4c36c
+			fabric-data-attachment-api-v1: Fabric Data Attachment API (v1) 1.8.10+946bf4c36c
+			fabric-data-generation-api-v1: Fabric Data Generation API (v1) 23.2.3+55e55d296c
+			fabric-dimensions-v1: Fabric Dimensions API (v1) 4.0.19+946bf4c36c
+			fabric-entity-events-v1: Fabric Entity Events (v1) 2.1.1+c9e472736c
+			fabric-events-interaction-v0: Fabric Events Interaction (v0) 4.0.23+946bf4c36c
+			fabric-game-rule-api-v1: Fabric Game Rule API (v1) 1.0.73+c64c9c5b6c
+			fabric-item-api-v1: Fabric Item API (v1) 11.4.3+946bf4c36c
+			fabric-item-group-api-v1: Fabric Item Group API (v1) 4.2.13+946bf4c36c
+			fabric-key-binding-api-v1: Fabric Key Binding API (v1) 1.0.65+946bf4c36c
+			fabric-lifecycle-events-v1: Fabric Lifecycle Events (v1) 2.6.3+db4dfd856c
+			fabric-loot-api-v2: Fabric Loot API (v2) 3.0.55+3f89f5a56c
+			fabric-loot-api-v3: Fabric Loot API (v3) 2.0.2+946bf4c36c
+			fabric-message-api-v1: Fabric Message API (v1) 6.1.1+946bf4c36c
+			fabric-model-loading-api-v1: Fabric Model Loading API (v1) 5.2.5+946bf4c36c
+			fabric-networking-api-v1: Fabric Networking API (v1) 5.0.1+946bf4c36c
+			fabric-object-builder-api-v1: Fabric Object Builder API (v1) 21.1.7+946bf4c36c
+			fabric-particles-v1: Fabric Particles (v1) 4.1.7+946bf4c36c
+			fabric-recipe-api-v1: Fabric Recipe API (v1) 8.1.14+946bf4c36c
+			fabric-registry-sync-v0: Fabric Registry Sync (v0) 6.1.27+946bf4c36c
+			fabric-renderer-api-v1: Fabric Renderer API (v1) 7.0.2+946bf4c36c
+			fabric-renderer-indigo: Fabric Renderer - Indigo 4.0.2+946bf4c36c
+			fabric-rendering-fluids-v1: Fabric Rendering Fluids (v1) 3.1.30+fa6cb72b6c
+			fabric-rendering-v1: Fabric Rendering (v1) 12.4.0+e8d43c766c
+			fabric-resource-conditions-api-v1: Fabric Resource Conditions API (v1) 5.0.24+946bf4c36c
+			fabric-resource-loader-v0: Fabric Resource Loader (v0) 3.1.11+946bf4c36c
+			fabric-screen-api-v1: Fabric Screen API (v1) 2.0.51+946bf4c36c
+			fabric-screen-handler-api-v1: Fabric Screen Handler API (v1) 1.3.136+946bf4c36c
+			fabric-sound-api-v1: Fabric Sound API (v1) 1.0.42+946bf4c36c
+			fabric-tag-api-v1: Fabric Tag API (v1) 1.2.1+946bf4c36c
+			fabric-transfer-api-v1: Fabric Transfer API (v1) 6.0.5+946bf4c36c
+			fabric-transitive-access-wideners-v1: Fabric Transitive Access Wideners (v1) 6.4.1+ac3e15d16c
+		fabric-language-kotlin: Fabric Language Kotlin 1.13.4+kotlin.2.2.0
+			org_jetbrains_kotlin_kotlin-reflect: kotlin-reflect 2.2.0
+			org_jetbrains_kotlin_kotlin-stdlib: kotlin-stdlib 2.2.0
+			org_jetbrains_kotlin_kotlin-stdlib-jdk7: kotlin-stdlib-jdk7 2.2.0
+			org_jetbrains_kotlin_kotlin-stdlib-jdk8: kotlin-stdlib-jdk8 2.2.0
+			org_jetbrains_kotlinx_atomicfu-jvm: atomicfu-jvm 0.28.0
+			org_jetbrains_kotlinx_kotlinx-coroutines-core-jvm: kotlinx-coroutines-core-jvm 1.10.2
+			org_jetbrains_kotlinx_kotlinx-coroutines-jdk8: kotlinx-coroutines-jdk8 1.10.2
+			org_jetbrains_kotlinx_kotlinx-datetime-jvm: kotlinx-datetime-jvm 0.6.2
+			org_jetbrains_kotlinx_kotlinx-io-bytestring-jvm: kotlinx-io-bytestring-jvm 0.7.0
+			org_jetbrains_kotlinx_kotlinx-io-core-jvm: kotlinx-io-core-jvm 0.7.0
+			org_jetbrains_kotlinx_kotlinx-serialization-cbor-jvm: kotlinx-serialization-cbor-jvm 1.8.1
+			org_jetbrains_kotlinx_kotlinx-serialization-core-jvm: kotlinx-serialization-core-jvm 1.8.1
+			org_jetbrains_kotlinx_kotlinx-serialization-json-jvm: kotlinx-serialization-json-jvm 1.8.1
+		fabricloader: Fabric Loader 0.16.14
+		fabrishot: Fabrishot 1.16.1
+		fastquit: FastQuit 3.1.1+mc1.21.6
+		ferritecore: FerriteCore 8.0.0
+		forgeconfigapiport: Forge Config API Port 21.7.0
+			com_electronwill_night-config_core: core 3.8.2
+			com_electronwill_night-config_toml: toml 3.8.2
+		immediatelyfast: ImmediatelyFast 1.11.0+1.21.7
+			net_lenni0451_reflect: Reflect 1.3.4
+		iris: Iris 1.9.1+mc1.21.7
+			io_github_douira_glsl-transformer: glsl-transformer 2.0.1
+			org_anarres_jcpp: jcpp 1.4.14
+			org_antlr_antlr4-runtime: antlr4-runtime 4.13.1
+		isxander-main-menu-credits: Main Menu Credits 1.2.0
+		java: OpenJDK 64-Bit Server VM 21
+		lambdynlights: LambDynamicLights 4.3.0+1.21.6
+			lambdynlights_api: LambDynamicLights (API) 4.3.0+1.21.6
+				yumi-commons-collections: Yumi Commons: Collections 1.0.0-alpha.12
+				yumi-commons-core: Yumi Commons: Core 1.0.0-alpha.12
+				yumi-commons-event: Yumi Commons: Event 1.0.0-alpha.12
+			pride: Pride Lib 1.4.0+1.21.6
+			spruceui: SpruceUI 8.0.0+1.21.6
+		languagereload: Language Reload 1.7.4+1.21.6
+		lithium: Lithium 0.18.0+mc1.21.7
+		minecraft: Minecraft 1.21.7
+		mixintrace: MixinTrace 1.1.1+1.17
+		modelfix: Model Gap Fix 1.21.5-1.12
+		modmenu: Mod Menu 15.0.0-beta.3
+			placeholder-api: Placeholder API 2.7.0+1.21.6
+		morechathistory: More Chat History 1.3.1
+		moreculling: More Culling 1.4.0-beta.1
+			conditional-mixin: conditional mixin 0.6.3
+			mixinsquared: MixinSquared 0.2.0
+		nochatreports: No Chat Reports 1.21.7-v2.14.0
+		optigui: OptiGUI 2.3.0-beta.7+1.21.6
+			org_apache_commons_commons-text: commons-text 1.12.0
+			org_ini4j_ini4j: ini4j 0.5.4
+		paginatedadvancements: Paginated Advancements 2.7.0+1.21.7
+		puzzle: Puzzle 2.1.1
+			midnightlib: MidnightLib 1.7.4
+		reeses-sodium-options: Reese's Sodium Options 1.8.4+mc1.21.6
+		rrls: Remove Reloading Screen 5.1.8+mc1.21.6-fabric
+		sodium: Sodium 0.6.13+mc1.21.6
+		sodium-extra: Sodium Extra 0.6.6+mc1.21.6
+		yet_another_config_lib_v3: YetAnotherConfigLib 3.7.1+1.21.6-fabric
+			com_twelvemonkeys_common_common-image: common-image 3.12.0
+			com_twelvemonkeys_common_common-io: common-io 3.12.0
+			com_twelvemonkeys_common_common-lang: common-lang 3.12.0
+			com_twelvemonkeys_imageio_imageio-core: imageio-core 3.12.0
+			com_twelvemonkeys_imageio_imageio-metadata: imageio-metadata 3.12.0
+			com_twelvemonkeys_imageio_imageio-webp: imageio-webp 3.12.0
+			org_quiltmc_parsers_gson: gson 0.2.1
+			org_quiltmc_parsers_json: json 0.2.1
+		yosbr: YOSBR 0.1.2
+		zoomify: Zoomify 2.14.4+1.21.6
+			com_akuleshov7_ktoml-core-jvm: ktoml-core-jvm 0.5.2
+	Loaded Shaderpack: (off)

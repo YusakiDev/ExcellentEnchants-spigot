@@ -54,7 +54,9 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
     public void enable() {
         this.loadAPI();
 
-        if (Version.isSpigot()) {
+        boolean needsRegistryHack = Version.isSpigot() || this.foliaLib.isFolia();
+        
+        if (needsRegistryHack) {
             this.loadInternals();
             if (this.registryHack == null) {
                 this.error("Unsupported server version!");
