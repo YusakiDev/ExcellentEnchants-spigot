@@ -41,7 +41,7 @@ public class EnchantsBootstrap implements PluginBootstrap {
 
     @NotNull
     private static TagKey<ItemType> customItemTag(@NotNull String name) {
-        return TagKey.create(RegistryKey.ITEM, Key.key(ConfigBridge.NAMESPACE, name));
+        return TagKey.create(RegistryKey.ITEM, Key.key(ConfigBridge.getNamespace(), name));
     }
 
     @NotNull
@@ -56,6 +56,11 @@ public class EnchantsBootstrap implements PluginBootstrap {
 
         ConfigBridge.load(dataDir, true); // Load distribution config, assign isPaper field.
         EnchantDefaults.load(dataDir); // Load defaults and read from the config files Definition and Distribution settings for enchants.
+        
+        // Debug: log the namespace being used
+        context.getLogger().info("Using namespace: {} (Custom namespace enabled: {})", 
+            ConfigBridge.getNamespace(), 
+            DistributionConfig.CUSTOM_NAMESPACE_ENABLED.get());
 
         var lifeCycle = context.getLifecycleManager();
 

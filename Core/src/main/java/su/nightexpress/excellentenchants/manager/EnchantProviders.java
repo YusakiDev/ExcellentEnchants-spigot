@@ -39,6 +39,7 @@ public class EnchantProviders {
         EnchantRegistry.addProvider(EnchantId.SATURATION, (file, data) -> new SaturationEnchant(plugin, file, data));
         EnchantRegistry.addProvider(EnchantId.SPEED, (file, data) -> new SpeedyEnchant(plugin, file, data));
         EnchantRegistry.addProvider(EnchantId.STOPPING_FORCE, (file, data) -> new StoppingForceEnchant(plugin, file, data));
+        EnchantRegistry.addProvider(EnchantId.VITALITY, (file, data) -> new VitalityEnchant(plugin, file, data));
         EnchantRegistry.addProvider(EnchantId.WATER_BREATHING, (file, data) -> new WaterBreathingEnchant(plugin, file, data));
 
         EnchantRegistry.addProvider(EnchantId.BOMBER, (file, data) -> new BomberEnchant(plugin, file, data));
@@ -80,6 +81,7 @@ public class EnchantProviders {
 
         EnchantRegistry.addProvider(EnchantId.CURSE_OF_FRAGILITY, (file, data) -> new CurseOfFragilityEnchant(plugin, file, data));
         EnchantRegistry.addProvider(EnchantId.RESTORE, (file, data) -> new RestoreEnchant(plugin, file, data));
+        EnchantRegistry.addProvider(EnchantId.SELF_REPAIRING, (file, data) -> new SelfRepairingEnchant(plugin, file, data));
         EnchantRegistry.addProvider(EnchantId.SOULBOUND, (file, data) -> new SoulboundEnchant(plugin, file, data));
 
         EnchantRegistry.addProvider(EnchantId.BANE_OF_NETHERSPAWN, (file, data) -> new BaneOfNetherspawnEnchant(plugin, file, data));

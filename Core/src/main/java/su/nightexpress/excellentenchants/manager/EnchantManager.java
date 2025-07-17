@@ -32,6 +32,7 @@ import su.nightexpress.nightcore.manager.AbstractManager;
 import su.nightexpress.nightcore.util.Players;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.bridge.RegistryType;
+import su.nightexpress.nightcore.util.bukkit.NightTask;
 import su.nightexpress.nightcore.util.wrapper.UniParticle;
 
 import java.io.File;
@@ -178,8 +179,11 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
     }
 
     private void tickPassiveEnchants() {
+        // For Folia compatibility: schedule per-entity tasks instead of global iteration
         this.getPassiveEnchantEntities().forEach(entity -> {
-            this.handleArmorEnchants(entity, EnchantRegistry.PASSIVE, (item, enchant, level) -> enchant.onTrigger(entity, item, level));
+            this.plugin.runAtEntity(entity, __ -> {
+                this.handleArmorEnchants(entity, EnchantRegistry.PASSIVE, (item, enchant, level) -> enchant.onTrigger(entity, item, level));
+            });
         });
     }
 
@@ -309,4 +313,3 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
         });
     }
 }
-

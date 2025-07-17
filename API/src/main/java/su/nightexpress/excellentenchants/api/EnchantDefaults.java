@@ -159,6 +159,12 @@ public class EnchantDefaults {
             .items(ItemSetId.LEGGINGS)
             .build(), EnchantDistribution.regular(TradeType.PLAINS_COMMON));
 
+        EnchantRegistry.addData(EnchantId.VITALITY, EnchantDefinition.builder("Vitality", 3)
+            .description("Increases max health by " + GENERIC_AMOUNT + "❤.")
+            .weight(RARE)
+            .items(ItemSetId.ARMOR)
+            .build(), EnchantDistribution.treasure(TradeType.JUNGLE_SPECIAL));
+
         EnchantRegistry.addData(EnchantId.WATER_BREATHING, EnchantDefinition.builder("Water Breathing", 1)
             .description("Grants permanent " + EFFECT_TYPE + " " + EFFECT_AMPLIFIER + " effect.")
             .weight(VERY_RARE)
@@ -433,6 +439,12 @@ public class EnchantDefaults {
             .weight(RARE)
             .items(ItemSetId.BREAKABLE)
             .build(), EnchantDistribution.regular(TradeType.DESERT_COMMON));
+
+        EnchantRegistry.addData(EnchantId.SELF_REPAIRING, EnchantDefinition.builder("Self Repairing", 3)
+            .description("Repairs " + GENERIC_AMOUNT + " durability every few seconds.")
+            .weight(RARE)
+            .items(ItemSetId.BREAKABLE)
+            .build(), EnchantDistribution.treasure(TradeType.TAIGA_SPECIAL));
 
         EnchantRegistry.addData(EnchantId.SOULBOUND, EnchantDefinition.builder("Soulbound", 1)
             .description("Protects from being dropped on death.")

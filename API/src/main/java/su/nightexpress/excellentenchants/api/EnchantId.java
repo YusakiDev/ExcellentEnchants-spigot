@@ -17,6 +17,7 @@ public class EnchantId {
     public static final String SATURATION           = "saturation";
     public static final String SPEED                = "speed";
     public static final String STOPPING_FORCE       = "stopping_force";
+    public static final String VITALITY             = "vitality";
     public static final String WATER_BREATHING      = "water_breathing";
 
     public static final String BOMBER             = "bomber";
@@ -60,6 +61,7 @@ public class EnchantId {
 
     public static final String CURSE_OF_FRAGILITY  = "curse_of_fragility";
     public static final String RESTORE             = "restore";
+    public static final String SELF_REPAIRING      = "repairing";
     public static final String SOULBOUND           = "soulbound";
 
     public static final String BANE_OF_NETHERSPAWN = "bane_of_netherspawn";

@@ -43,7 +43,7 @@
 
 # Compatibility
 - **Java Version:** 21 or higher.
-- **Server Software:** Spigot / Paper / Purpur
+- **Server Software:** Spigot / Paper / Purpur / Folia
 - **Server Version:** 1.21.4 or higher.
 
 # Dependencies

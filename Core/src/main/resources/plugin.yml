@@ -2,8 +2,9 @@ main: su.nightexpress.excellentenchants.EnchantsPlugin
 version: '${project.version}'
 name: ExcellentEnchants
 author: NightExpress
-desciption: A lot of new enchantments properly integrated into the server!
+desciption: A lot of new enchantments properly integrated into the server! Full Folia support included.
 depend: [ nightcore ]
+folia-supported: true
 softdepend:
   - ProtocolLib
   - packetevents

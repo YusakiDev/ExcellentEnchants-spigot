@@ -135,6 +135,8 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
         return this.registryHack;
     }
 
+
+
 //    public boolean hasInternals() {
 //        return this.enchantNMS != null;
 //    }
