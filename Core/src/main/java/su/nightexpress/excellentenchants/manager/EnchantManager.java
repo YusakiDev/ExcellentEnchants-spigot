@@ -181,7 +181,7 @@ public class EnchantManager extends AbstractManager<EnchantsPlugin> {
     private void tickPassiveEnchants() {
         // For Folia compatibility: schedule per-entity tasks instead of global iteration
         this.getPassiveEnchantEntities().forEach(entity -> {
-            this.plugin.runAtEntity(entity, __ -> {
+            this.plugin.getFoliaLib().getScheduler().runAtEntity(entity, __ -> {
                 this.handleArmorEnchants(entity, EnchantRegistry.PASSIVE, (item, enchant, level) -> enchant.onTrigger(entity, item, level));
             });
         });

@@ -38,7 +38,7 @@ public class SoulboundEnchant extends GameEnchantment implements DeathEnchant {
         if (deathEvent.getKeepInventory()) return false;
 
         event.getDrops().remove(item);
-        this.plugin.runAtEntity(deathEvent.getEntity(), task -> Players.addItem(deathEvent.getEntity(), item));
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(deathEvent.getEntity(), task -> Players.addItem(deathEvent.getEntity(), item));
         return true;
     }
 }

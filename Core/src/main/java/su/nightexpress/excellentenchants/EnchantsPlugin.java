@@ -1,5 +1,6 @@
 package su.nightexpress.excellentenchants;
 
+import com.tcoded.folialib.FoliaLib;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentenchants.api.EnchantDefaults;
 import su.nightexpress.excellentenchants.api.EnchantRegistry;
@@ -32,6 +33,7 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
 
     private EnchantManager enchantManager;
     private RegistryHack   registryHack;
+    private FoliaLib       foliaLib;
 
     @Override
     @NotNull
@@ -44,6 +46,9 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
 
     @Override
     public void enable() {
+        // Initialize FoliaLib for direct scheduling
+        this.foliaLib = new FoliaLib(this);
+        
         this.loadAPI();
 
         if (Version.isSpigot()) {
@@ -135,7 +140,10 @@ public class EnchantsPlugin extends NightPlugin implements ImprovedCommands {
         return this.registryHack;
     }
 
-
+    @NotNull
+    public FoliaLib getFoliaLib() {
+        return this.foliaLib;
+    }
 
 //    public boolean hasInternals() {
 //        return this.enchantNMS != null;

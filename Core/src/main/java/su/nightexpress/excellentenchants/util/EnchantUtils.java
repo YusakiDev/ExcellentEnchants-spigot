@@ -43,7 +43,7 @@ public class EnchantUtils {
     public static void busyBreak(@NotNull Player player, @NotNull Block block) {
         busyBreak = true;
         EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
-        plugin.runAtEntity(player, (task) -> {
+        plugin.getFoliaLib().getScheduler().runAtEntity(player, (task) -> {
             player.breakBlock(block);
             busyBreak = false;
         });
@@ -64,7 +64,7 @@ public class EnchantUtils {
 
         // Use FoliaLib to run at entity context for Folia compatibility
         EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
-        plugin.runAtEntity(player, (task) -> {
+        plugin.getFoliaLib().getScheduler().runAtEntity(player, (task) -> {
             runnable.run();
             allowDisplayUpdate(player);
         });
@@ -342,7 +342,7 @@ public class EnchantUtils {
         Location spawn = new Location(world, x, y, z);
 
         EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
-        plugin.runAtLocation(spawn, (task) -> {
+        plugin.getFoliaLib().getScheduler().runAtLocation(spawn, (task) -> {
             Item item = world.createEntity(spawn, Item.class);
             item.setItemStack(itemStack);
             event.getItems().add(item);

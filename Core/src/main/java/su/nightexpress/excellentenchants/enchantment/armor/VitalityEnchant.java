@@ -78,14 +78,14 @@ public class VitalityEnchant extends GameEnchantment implements PassiveEnchant, 
         if (!(entity instanceof Player player)) return false;
         
         // Process all equipment when passive enchant ticks
-        this.plugin.runAtEntity(player, task -> processAllEquipment(player));
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(player, task -> processAllEquipment(player));
         return true;
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent event) {
         // Process player's equipment when they join
-        this.plugin.runAtEntity(event.getPlayer(), 
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(event.getPlayer(), 
             task -> processAllEquipment(event.getPlayer()));
     }
     
@@ -100,14 +100,14 @@ public class VitalityEnchant extends GameEnchantment implements PassiveEnchant, 
         if (!(event.getWhoClicked() instanceof Player player)) return;
         
         // Process equipment after inventory changes
-        this.plugin.runAtEntity(player, 
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(player, 
             task -> processAllEquipment(player));
     }
     
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemBreak(PlayerItemBreakEvent event) {
         // Process when an item breaks
-        this.plugin.runAtEntity(event.getPlayer(), 
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(event.getPlayer(), 
             task -> processAllEquipment(event.getPlayer()));
     }
     
@@ -116,7 +116,7 @@ public class VitalityEnchant extends GameEnchantment implements PassiveEnchant, 
         if (!(event.getEntity() instanceof Player player)) return;
         
         // Process after picking up items that might be equippable
-        this.plugin.runAtEntity(player, 
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(player, 
             task -> processAllEquipment(player));
     }
     
@@ -130,7 +130,7 @@ public class VitalityEnchant extends GameEnchantment implements PassiveEnchant, 
             ItemStack item = event.getItem();
             if (item != null && isArmor(item.getType())) {
                 // Schedule a task to check equipment after potential armor equip
-                this.plugin.runAtEntity(player, 
+                this.plugin.getFoliaLib().getScheduler().runAtEntity(player, 
                     task -> processAllEquipment(player));
             }
         }
@@ -149,7 +149,7 @@ public class VitalityEnchant extends GameEnchantment implements PassiveEnchant, 
         Player player = event.getPlayer();
         
         // Process equipment after respawn
-        this.plugin.runAtEntity(player, 
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(player, 
             task -> processAllEquipment(player));
     }
     
@@ -193,7 +193,10 @@ public class VitalityEnchant extends GameEnchantment implements PassiveEnchant, 
                 AttributeModifier.Operation.ADD_NUMBER
             );
             
-            maxHealthAttribute.addModifier(modifier);
+            // Check if modifier already exists before adding
+            if (maxHealthAttribute.getModifier(modifierKey) == null) {
+                maxHealthAttribute.addModifier(modifier);
+            }
             
             // Store the modifier for later cleanup
             this.activeModifiers.computeIfAbsent(player.getUniqueId(), k -> new ConcurrentHashMap<>())
