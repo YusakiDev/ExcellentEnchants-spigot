@@ -69,7 +69,7 @@ public class AnvilListener extends AbstractListener<EnchantsPlugin> {
         event.setResult(recharged);
 
         Player player = (Player) event.getView().getPlayer();
-        this.plugin.runAtEntity(player, task -> event.getView().setRepairCost(chargable.size()));
+        this.plugin.getFoliaLib().getScheduler().runAtEntity(player, task -> event.getView().setRepairCost(chargable.size()));
         return true;
     }
 
