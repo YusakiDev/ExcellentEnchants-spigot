@@ -2,8 +2,9 @@ main: su.nightexpress.excellentenchants.EnchantsPlugin
 version: '${project.version}'
 name: ExcellentEnchants
 author: NightExpress
-desciption: 75+ vanilla-like enchantments with seemless integration!
+desciption: 75+ vanilla-like enchantments with seemless integration! Full Folia support included.
 depend: [ nightcore ]
+folia-supported: true
 softdepend:
   - ProtocolLib
   - packetevents

@@ -42,6 +42,11 @@
             <id>codemc-releases</id>
             <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
+
+        <repository>
+            <id>tcoded-releases</id>
+            <url>https://repo.tcoded.com/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -116,6 +121,13 @@
             <version>5.3.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.tcoded</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>0.5.1</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -142,20 +154,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
-                <!-- Java 16 Fix -->
-                <dependencies>
-                    <dependency>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm</artifactId>
-                        <version>9.2</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm-commons</artifactId>
-                        <version>9.2</version>
-                    </dependency>
-                </dependencies>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -166,7 +165,7 @@
                             <outputFile>${project.parent.basedir}\target\${project.parent.name}-${project.version}.jar</outputFile>
                             <artifactSet>
                                 <includes>
-                                    <include>su.nightexpress.excellentenchants*</include>
+                                    <include>su.nightexpress.excellentenchants:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

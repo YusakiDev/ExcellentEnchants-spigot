@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import su.nightexpress.excellentenchants.EnchantsPlugin;
 import su.nightexpress.excellentenchants.enchantment.EnchantHolder;
 import su.nightexpress.excellentenchants.enchantment.EnchantRegistry;
 import su.nightexpress.excellentenchants.api.enchantment.CustomEnchantment;
@@ -42,8 +43,11 @@ public class EnchantUtils {
 
     public static void busyBreak(@NotNull Player player, @NotNull Block block) {
         busyBreak = true;
-        player.breakBlock(block);
-        busyBreak = false;
+        EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
+        plugin.runAtEntity(player, (task) -> {
+            player.breakBlock(block);
+            busyBreak = false;
+        });
     }
 
     public static void safeBusyBreak(@NotNull Player player, @NotNull Block block) {
@@ -58,8 +62,13 @@ public class EnchantUtils {
 
     public static void runInDisabledDisplayUpdate(@NotNull Player player, @NotNull Runnable runnable) {
         stopDisplayUpdate(player);
-        runnable.run();
-        allowDisplayUpdate(player);
+
+        // Use FoliaLib to run at entity context for Folia compatibility
+        EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
+        plugin.runAtEntity(player, (task) -> {
+            runnable.run();
+            allowDisplayUpdate(player);
+        });
     }
 
     public static void stopDisplayUpdate(@NotNull Player player) {
@@ -335,10 +344,14 @@ public class EnchantUtils {
         double z = (location.getZ() + 0.5F) + Rnd.getDouble(-0.25D, 0.25D);
 
         Location spawn = new Location(world, x, y, z);
-        Item item = world.createEntity(spawn, Item.class);
-        item.setItemStack(itemStack);
-        if (consumer != null) consumer.accept(item);
 
-        event.getItems().add(item);
+        // Use FoliaLib for Folia-compatible location scheduling
+        EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
+        plugin.runAtLocation(spawn, (task) -> {
+            Item item = world.createEntity(spawn, Item.class);
+            item.setItemStack(itemStack);
+            if (consumer != null) consumer.accept(item);
+            event.getItems().add(item);
+        });
     }
 }

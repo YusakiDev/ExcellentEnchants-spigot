@@ -36,7 +36,10 @@
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
-
+        <repository>
+            <id>tcoded-releases</id>
+            <url>https://repo.tcoded.com/releases</url>
+        </repository>
     </repositories>
 
     <pluginRepositories>

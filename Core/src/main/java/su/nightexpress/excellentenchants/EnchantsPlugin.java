@@ -1,5 +1,9 @@
 package su.nightexpress.excellentenchants;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentenchants.api.item.ItemSetRegistry;
 import su.nightexpress.excellentenchants.bridge.spigot.SpigotEnchantsBootstrap;
@@ -20,9 +24,12 @@ import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 
+import java.util.function.Consumer;
+
 public class EnchantsPlugin extends NightPlugin {
 
     private EnchantManager enchantManager;
+    private FoliaLib foliaLib;
 
     @Override
     @NotNull
@@ -57,6 +64,9 @@ public class EnchantsPlugin extends NightPlugin {
 
     @Override
     public void enable() {
+        // Initialize FoliaLib for Folia-compatible task scheduling
+        this.foliaLib = new FoliaLib(this);
+
         this.enchantManager = new EnchantManager(this);
         this.enchantManager.setup();
 
@@ -108,5 +118,29 @@ public class EnchantsPlugin extends NightPlugin {
     @NotNull
     public EnchantManager getEnchantManager() {
         return this.enchantManager;
+    }
+
+    /**
+     * Get the FoliaLib instance for direct scheduler access.
+     */
+    @NotNull
+    public FoliaLib getFoliaLib() {
+        return this.foliaLib;
+    }
+
+    /**
+     * Run a task at the entity's location/region (Folia-compatible).
+     * On Spigot/Paper, this runs on the main thread.
+     */
+    public void runAtEntity(@NotNull Entity entity, @NotNull Consumer<WrappedTask> consumer) {
+        this.foliaLib.getScheduler().runAtEntity(entity, consumer);
+    }
+
+    /**
+     * Run a task at a specific location/region (Folia-compatible).
+     * On Spigot/Paper, this runs on the main thread.
+     */
+    public void runAtLocation(@NotNull Location location, @NotNull Consumer<WrappedTask> consumer) {
+        this.foliaLib.getScheduler().runAtLocation(location, consumer);
     }
 }

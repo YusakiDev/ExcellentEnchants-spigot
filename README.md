@@ -46,6 +46,7 @@ Provides **75+ vanilla-like** enchantments for your server, where each enchantme
 - **Visual Effects**. Enchantments comes with particle effects and sounds!
 - [**Enchant Charges**](https://nightexpressdev.com/excellentenchants/features/charges/). Unique feature that brings new mechanics to the custom enchantments!
 - [**PlaceholderAPI**](https://nightexpressdev.com/excellentenchants/hooks/placeholder-api/) support.
+- **Folia Support**. Full compatibility with Folia servers!
 
 # Dependencies
 **REQUIRED:**
