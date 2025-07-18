@@ -54,7 +54,7 @@ public class SelfRepairingEnchant extends GameEnchantment implements PassiveEnch
 
     public SelfRepairingEnchant(@NotNull EnchantsPlugin plugin, @NotNull File file, @NotNull EnchantData data) {
         super(plugin, file, data);
-        this.addComponent(EnchantComponent.PERIODIC, Period.ofSeconds(30));
+        this.addComponent(EnchantComponent.PERIODIC, Period.ofSeconds(2));
     }
 
     @Override

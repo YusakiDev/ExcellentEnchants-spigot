@@ -20,6 +20,7 @@ import su.nightexpress.nightcore.util.Lists;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +29,7 @@ public class TunnelEnchant extends GameEnchantment implements MiningEnchant {
     // X and Z offsets for each block AoE mined
     private static final int[][] MINING_COORD_OFFSETS = new int[][]{{0, 0}, {0, -1}, {-1, 0}, {0, 1}, {1, 0}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1},};
     private static final Set<Material> INTERACTABLE_BLOCKS = new HashSet<>();
+    private static boolean isProcessingTunnel = false;
 
     static {
         INTERACTABLE_BLOCKS.add(Material.REDSTONE_ORE);
@@ -58,54 +60,134 @@ public class TunnelEnchant extends GameEnchantment implements MiningEnchant {
         if (!(entity instanceof Player player)) return false;
         if (EnchantUtils.isBusy()) return false;
         if (this.disableOnSneak && player.isSneaking()) return false;
+        if (isProcessingTunnel) return false;
 
         Block block = event.getBlock();
-        if (block.getType().isInteractable() && !INTERACTABLE_BLOCKS.contains(block.getType())) return false;
-        if (block.getDrops(item).isEmpty()) return false;
+        
+        // Get the block face that was hit by analyzing player's looking direction
+        BlockFace hitFace = getHitBlockFace(player, block);
+        if (hitFace == null) return false;
+        
+        // Debug: Show which face was detected
+
+        // Calculate depth based on enchantment level
+        int depthMultiplier = level;
+        
+        // Collect all blocks to be mined first
+        Set<Block> blocksToMine = new LinkedHashSet<>();
+        
+        // Always mine in 3x3 pattern
+        int blocksBroken = 9;
+
+        // Collect blocks in a 3x3 pattern with depth based on level
+        for (int depth = 0; depth < depthMultiplier; depth++) {
+            for (int i = 0; i < blocksBroken; i++) {
+                if (item.getType().isAir()) break;
+
+                int xOffset = MINING_COORD_OFFSETS[i][0];
+                int zOffset = MINING_COORD_OFFSETS[i][1];
+                
+                Block blockAdd = get3x3BlockPosition(block, hitFace, xOffset, zOffset, depth);
+                if (blockAdd == null) continue;
 
 
-        final List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(Lists.newSet(Material.AIR, Material.WATER, Material.LAVA), 10);
-        if (lastTwoTargetBlocks.size() != 2 || !lastTwoTargetBlocks.get(1).getType().isOccluding()) {
-            return false;
-        }
-        final Block targetBlock = lastTwoTargetBlocks.get(1);
-        final Block adjacentBlock = lastTwoTargetBlocks.get(0);
-        final BlockFace dir = targetBlock.getFace(adjacentBlock);
-        boolean isZ = dir == BlockFace.EAST || dir == BlockFace.WEST;
+                // Skip blocks that should not be mined
+                if (blockAdd.equals(block) && depth == 0) continue;
+                if (blockAdd.isLiquid()) continue;
 
-        // Mine + shape if Tunnel I, 3x3 if Tunnel II
-        int blocksBroken = 1;
-        if (level == 1) blocksBroken = 2;
-        else if (level == 2) blocksBroken = 5;
-        else if (level >= 3) blocksBroken = 9;
+                Material addType = blockAdd.getType();
+                
+                // Skip air blocks
+                if (addType == Material.AIR) continue;
 
-        for (int i = 0; i < blocksBroken; i++) {
-            if (item.getType().isAir()) break;
+                // Skip blocks harder than the initial block
+                if (blockAdd.getType().getHardness() > block.getType().getHardness()) continue;
 
-            int xAdd = MINING_COORD_OFFSETS[i][0];
-            int zAdd = MINING_COORD_OFFSETS[i][1];
+                // Some extra block checks.
+                if (addType == Material.BEDROCK || addType == Material.END_PORTAL || addType == Material.END_PORTAL_FRAME) continue;
+                if (addType == Material.OBSIDIAN && addType != block.getType()) continue;
 
-            Block blockAdd;
-            if (dir == BlockFace.UP || dir == BlockFace.DOWN) {
-                blockAdd = block.getLocation().clone().add(xAdd, 0, zAdd).getBlock();
-            } else {
-                blockAdd = block.getLocation().clone().add(isZ ? 0 : xAdd, zAdd, isZ ? xAdd : 0).getBlock();
+                blocksToMine.add(blockAdd);
             }
-
-            // Skip blocks that should not be mined
-            if (blockAdd.equals(block)) continue;
-            if (blockAdd.getDrops(item).isEmpty()) continue;
-            if (blockAdd.isLiquid()) continue;
-
-            Material addType = blockAdd.getType();
-
-            // Some extra block checks.
-            if (addType.isInteractable() && !INTERACTABLE_BLOCKS.contains(addType)) continue;
-            if (addType == Material.BEDROCK || addType == Material.END_PORTAL || addType == Material.END_PORTAL_FRAME) continue;
-            if (addType == Material.OBSIDIAN && addType != block.getType()) continue;
-
-            EnchantUtils.safeBusyBreak(player, blockAdd);
         }
+
+        // Break all collected blocks using the plugin's async scheduler
+        EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
+        plugin.getFoliaLib().getScheduler().runAtEntity(player, (task) -> {
+            isProcessingTunnel = true;
+            try {
+                blocksToMine.forEach(blockToMine -> {
+                    player.breakBlock(blockToMine);
+                });
+            } finally {
+                isProcessingTunnel = false;
+            }
+        });
         return true;
+    }
+    
+    private BlockFace getHitBlockFace(Player player, Block block) {
+        // Get the direction the player is looking
+        var location = player.getEyeLocation();
+        var direction = location.getDirection();
+        
+        // Calculate which face was most likely hit based on player's look direction
+        double x = direction.getX();
+        double y = direction.getY();
+        double z = direction.getZ();
+        
+        // Find the axis with the largest absolute value
+        double absX = Math.abs(x);
+        double absY = Math.abs(y);
+        double absZ = Math.abs(z);
+        
+        if (absY > absX && absY > absZ) {
+            return y > 0 ? BlockFace.UP : BlockFace.DOWN;
+        } else if (absX > absZ) {
+            return x > 0 ? BlockFace.EAST : BlockFace.WEST;
+        } else {
+            return z > 0 ? BlockFace.SOUTH : BlockFace.NORTH;
+        }
+    }
+    
+    private Block get3x3BlockPosition(Block centerBlock, BlockFace hitFace, int xOffset, int zOffset, int depth) {
+        var location = centerBlock.getLocation();
+        
+        switch (hitFace) {
+            case UP:
+            case DOWN:
+                // For vertical faces, 3x3 is in the horizontal plane (X-Z)
+                location.add(xOffset, 0, zOffset);
+                // Apply depth in the Y direction
+                if (depth > 0) {
+                    location.add(0, hitFace == BlockFace.UP ? depth : -depth, 0);
+                }
+                break;
+                
+            case NORTH:
+            case SOUTH:
+                // For north/south faces, 3x3 is in the X-Y plane
+                location.add(xOffset, zOffset, 0);
+                // Apply depth in the Z direction
+                if (depth > 0) {
+                    location.add(0, 0, hitFace == BlockFace.NORTH ? -depth : depth);
+                }
+                break;
+                
+            case EAST:
+            case WEST:
+                // For east/west faces, 3x3 is in the Z-Y plane
+                location.add(0, zOffset, xOffset);
+                // Apply depth in the X direction
+                if (depth > 0) {
+                    location.add(hitFace == BlockFace.EAST ? depth : -depth, 0, 0);
+                }
+                break;
+                
+            default:
+                return null;
+        }
+        
+        return location.getBlock();
     }
 }

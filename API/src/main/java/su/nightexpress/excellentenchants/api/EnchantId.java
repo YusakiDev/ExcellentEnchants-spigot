@@ -50,13 +50,13 @@ public class EnchantId {
     public static final String GLASSBREAKER        = "glassbreaker";
     public static final String HASTE               = "haste";
     public static final String LUCKY_MINER         = "lucky_miner";
-    public static final String REPLANTER           = "replanter";
+    public static final String REPLANTER           = "replenish";
     public static final String SILK_CHEST          = "silk_chest";
     public static final String SILK_SPAWNER        = "silk_spawner";
     public static final String SMELTER             = "smelter";
     public static final String TELEKINESIS         = "telekinesis";
     public static final String TREEFELLER          = "treefeller";
-    public static final String TUNNEL              = "tunnel";
+    public static final String TUNNEL              = "power_mine";
     public static final String VEINMINER           = "veinminer";
 
     public static final String CURSE_OF_FRAGILITY  = "curse_of_fragility";
