@@ -105,7 +105,7 @@ public class VeinminerEnchant extends GameEnchantment implements MiningEnchant {
             prepare.addAll(nearby);
         }
         ores.remove(source);
-        ores.forEach(ore -> EnchantUtils.safeBusyBreak(player, ore));
+        EnchantUtils.busyBreakMany(player, ores);
     }
 
     @Override

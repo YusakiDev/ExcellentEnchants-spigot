@@ -56,6 +56,25 @@ public class EnchantUtils {
         }
     }
 
+    /**
+     * Break multiple blocks while keeping the busy flag set throughout.
+     * This prevents re-triggering enchantments while allowing all blocks to be broken.
+     */
+    public static void busyBreakMany(@NotNull Player player, @NotNull Set<Block> blocks) {
+        if (blocks.isEmpty()) return;
+        
+        busyBreak = true;
+        EnchantsPlugin plugin = EnchantsPlugin.getPlugin(EnchantsPlugin.class);
+        plugin.getFoliaLib().getScheduler().runAtEntity(player, (task) -> {
+            ItemStack tool = player.getInventory().getItemInMainHand();
+            for (Block block : blocks) {
+                if (tool.getType().isAir() || tool.getAmount() <= 0) break; // Tool broke
+                player.breakBlock(block);
+            }
+            busyBreak = false;
+        });
+    }
+
     public static boolean canUpdateDisplay(@NotNull Player player) {
         return !IGNORE_DISPLAY_UPDATE.contains(player.getUniqueId()) && player.getGameMode() != GameMode.CREATIVE;
     }

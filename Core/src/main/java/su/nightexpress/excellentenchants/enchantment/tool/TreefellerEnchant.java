@@ -104,16 +104,18 @@ public class TreefellerEnchant extends GameEnchantment implements MiningEnchant 
     }
 
     private void chopTree(@NotNull Player player, @NotNull Block source, @NotNull ItemStack tool) {
-        Set<Block> logsToBreak = this.getLogsAndLeaves(source, this.blockLimit);
-
-        logsToBreak.remove(source);
-
-        for (Block log : logsToBreak) {
-            if (tool.getAmount() <= 0) break; // Item broke.
-            if (!isLog(log.getType())) continue;
-
-            EnchantUtils.safeBusyBreak(player, log);
+        Set<Block> allBlocks = this.getLogsAndLeaves(source, this.blockLimit);
+        allBlocks.remove(source);
+        
+        // Filter to only logs (leaves will decay naturally)
+        Set<Block> logsToBreak = new HashSet<>();
+        for (Block block : allBlocks) {
+            if (isLog(block.getType())) {
+                logsToBreak.add(block);
+            }
         }
+
+        EnchantUtils.busyBreakMany(player, logsToBreak);
     }
 
     @Override
